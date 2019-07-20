@@ -1,7 +1,7 @@
 import { Model } from 'objection'
 import { TABLE_TIMESTAMPS } from './types'
 
-export default class Languages extends Model {
+export default class Language extends Model {
   static get tableName () {
     return 'translator_translations'
   }
