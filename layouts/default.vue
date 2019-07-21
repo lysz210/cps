@@ -35,6 +35,7 @@
       <v-btn icon @click.stop="fixed = !fixed">
         <v-icon>remove</v-icon>
       </v-btn>
+      <v-btn>{{ $i18n.locale }} {{ $t('hello') }}</v-btn>
       <v-toolbar-title v-text="title" />
       <v-spacer />
       <v-btn icon @click.stop="rightDrawer = !rightDrawer">

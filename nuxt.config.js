@@ -47,7 +47,8 @@ module.exports = {
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
     '@nuxtjs/eslint-module',
-    '~/modules/apollo'
+    '~/modules/apollo',
+    'nuxt-i18n'
   ],
   /*
    ** Axios module configuration
@@ -67,6 +68,25 @@ module.exports = {
       warning: colors.amber.base,
       error: colors.deepOrange.accent4,
       success: colors.green.accent3
+    }
+  },
+
+  /*
+   *
+   */
+  i18n: {
+    locales: ['it', 'en'],
+    defaultLocale: 'en',
+    vueI18n: {
+      fallbackLocale: 'en',
+      messages: {
+        en: {
+          hello: 'hello'
+        },
+        it: {
+          hello: 'ciao'
+        }
+      }
     }
   },
   /*
