@@ -3,7 +3,7 @@ export const TIMESTAMP = {
 }
 
 export const DELETED_AT = {
-  ...TIMESTAMP,
+  ...TIMESTAMP
 }
 
 export const CREATED_AT = {

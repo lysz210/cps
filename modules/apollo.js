@@ -1,7 +1,4 @@
-import {
-  ApolloServer,
-  gql
-} from 'apollo-server-express'
+import { ApolloServer, gql } from 'apollo-server-express'
 import GraphQLJSON from 'graphql-type-json'
 
 import { Language } from '../database/schema'
@@ -23,15 +20,15 @@ const typeDefs = gql`
   }
 
   type I18n {
-    locale: String,
+    locale: String
     message: JSON
   }
 `
 const resolvers = {
   Query: {
-    locales: async () => await Language.query()
+    locales: () => Language.query()
   },
-  JSON: GraphQLJSON,
+  JSON: GraphQLJSON
   // JSONObject: GraphQLJSONObject
 }
 
@@ -40,9 +37,9 @@ const server = new ApolloServer({
   resolvers
 })
 
-export default function apolloServer (moduleOptions) {
-  console.log('installing ApolloServer')
-  this.nuxt.hook('render:setupMiddleware', app => {
+export default function apolloServer(moduleOptions) {
+  // console.log('installing ApolloServer')
+  this.nuxt.hook('render:setupMiddleware', (app) => {
     server.applyMiddleware({ app, path: '/gql' })
   })
 }

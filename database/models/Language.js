@@ -2,15 +2,15 @@ import { Model } from 'objection'
 import { TABLE_TIMESTAMPS } from './types'
 
 export class Language extends Model {
-  static get tableName () {
+  static get tableName() {
     return 'translator_languages'
   }
 
-  static get idColumn () {
+  static get idColumn() {
     return 'id'
   }
 
-  static get jsonSchema () {
+  static get jsonSchema() {
     return {
       type: 'object',
       required: ['locale', 'name'],

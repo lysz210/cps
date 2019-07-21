@@ -4,7 +4,6 @@ const { resolve } = require('path')
 
 const { env } = process
 module.exports = {
-  
   client: env.DB_CONNECTION || 'sqlite3',
   useNullAsDefault: true,
   connection: {
@@ -16,4 +15,4 @@ module.exports = {
   seeds: {
     directory: resolve('.', env.DB_DIRNAME, 'seeds')
   }
-};
+}
