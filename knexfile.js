@@ -6,6 +6,7 @@ const { env } = process
 module.exports = {
   
   client: env.DB_CONNECTION || 'sqlite3',
+  useNullAsDefault: true,
   connection: {
     filename: resolve('.', env.DB_DIRNAME, env.DB_DATABASE || './dev.sqlite3')
   },

@@ -3,20 +3,20 @@ import {
   gql
 } from 'apollo-server-express'
 import GraphQLJSON from 'graphql-type-json'
-const { map } = require('lodash')
-const knownLanguages = require('../i18n/known_locales.json')
+
+import { Language } from '../database/schema'
+
 const typeDefs = gql`
   scalar JSON
   type Query {
     "A simple type of getting started!"
-    locales: [Locale],
-    ciao: JSON
+    locales: [Locale]
   }
 
   type Locale {
     id: Int
-    locale: String
-    name: String
+    locale: String!
+    name: String!
     script: String
     navtive: String
     regional: String
@@ -27,10 +27,9 @@ const typeDefs = gql`
     message: JSON
   }
 `
-let id = 1
 const resolvers = {
   Query: {
-    locales: () => map(knownLanguages, (localeObject, locale) => ({id: id++, locale, ...localeObject}))
+    locales: async () => await Language.query()
   },
   JSON: GraphQLJSON,
   // JSONObject: GraphQLJSONObject
