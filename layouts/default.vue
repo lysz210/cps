@@ -9,17 +9,16 @@
     >
       <v-list>
         <v-list-tile
-          v-for="(item, i) in items"
+          v-for="(item, i) in locales"
           :key="i"
-          :to="item.to"
+          :to="switchLocalePath(item.locale)"
           router
           exact
         >
-          <v-list-tile-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title v-text="item.title" />
+            <v-list-tile-title>
+              {{ item.locale }} - {{ item.name }}:{{ item.native }}
+            </v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
@@ -66,9 +65,12 @@
 </template>
 
 <script>
+import gql from 'graphql-tag'
+
 export default {
   data() {
     return {
+      locales: [],
       clipped: false,
       drawer: false,
       fixed: false,
@@ -88,6 +90,22 @@ export default {
       right: true,
       rightDrawer: false,
       title: 'Vuetify.js'
+    }
+  },
+  mounted() {
+    window.gql = gql
+  },
+  apollo: {
+    locales: {
+      query: gql`
+        query {
+          locales {
+            locale,
+            name,
+            native
+          }
+        }
+      `
     }
   }
 }

@@ -15,7 +15,7 @@ const typeDefs = gql`
     locale: String!
     name: String!
     script: String
-    navtive: String
+    native: String
     regional: String
   }
 
