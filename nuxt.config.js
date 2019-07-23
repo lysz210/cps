@@ -50,7 +50,7 @@ module.exports = {
     '@nuxtjs/eslint-module',
     '~/modules/apollo',
     '@nuxtjs/apollo',
-    'nuxt-i18n'
+    '~/modules/my-i18n',
   ],
   /*
    ** Axios module configuration
@@ -77,20 +77,8 @@ module.exports = {
    *
    */
   i18n: {
-    // FIXME: i module options non sono dinamici se non previsti dal modulo stesso
-    // vengono richiamati una sola volta durante il build.
-    // si puo' renderlo un modulo personalizzato che effettua il inject di nuxt-i18n
-    // per poter utilizzare la sintassi es6 import per recuperare i dati da db
-    // attraverso il model Language che viene utilizzato attualmente da apollo
-    // dopo aver effettuato questa operazione non bisogna piu' fare affidamente su
-    // apollo quer recuperare i locales diponibile perche' non piu' affidabili
-    // ma utilizzare direttamente quelli disponibili su $i18n.
-    // il modulo durante il build puo' effettuare la richiesta a yandex per recuperare le lingue
-    // disponibili per la traduzione. Solo per PROD effettuare la traduzione di tutte le entry delle traduzioni
-    // da verificare se e' possibile ricostruire anche l'intera lista dei routes al nuxt.start
-    // oppure e' un'operazione esclusivamente del build
-    locales: Object.keys(require('./i18n/known_locales.json')),
-    defaultLocale: 'en',
+    locales: ['en', 'it'],
+    defaultLocale: 'it',
     vueI18n: {
       fallbackLocale: 'en',
       messages: {
