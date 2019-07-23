@@ -1,5 +1,4 @@
 import { Language } from '../database/schema'
-import deepmerge from 'deepmerge'
 import { uniqBy, has, get, concat, isString } from 'lodash'
 /**
  * funzione asincrona per l'inserimento
