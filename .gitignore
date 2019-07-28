@@ -86,3 +86,7 @@ sw.*
 
 # Mac OSX
 .DS_Store
+
+# ignore SQlite dbs
+*.sqlite
+*.sqlite3

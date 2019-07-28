@@ -1,5 +1,8 @@
 const axios = require('axios')
+// TODO: usare il URL.SearchParam
 const querystring = require('querystring')
+
+// FIXME: da convertire in module es6
 
 class Translate {
 
@@ -42,6 +45,7 @@ class Translate {
   }
 }
 
+// FIXME: elimina codice di test e creare un sistema di test idoneo
 require('dotenv').config()
 const { env } = process
 const t = new Translate(env.YANDEX_TRANSLATE_API_URL, env.YANDEX_TRANSLATE_API_KEY, env.I18N_DEFAULT_LANG)

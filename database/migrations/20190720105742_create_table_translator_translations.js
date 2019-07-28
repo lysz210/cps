@@ -16,7 +16,7 @@ exports.up = function ({ schema }) {
       .comment('Soft delete col')
     $table
       .foreign('locale')
-      .references('locale')
+      .references('code')
       .on('translator_languages')
     $table.unique(['locale', 'namespace', 'group', 'item'])
   })

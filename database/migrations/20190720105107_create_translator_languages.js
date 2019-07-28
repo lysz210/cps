@@ -4,7 +4,7 @@ exports.up = function (knex) {
   return knex.schema.createTable(TABLE_NAME, ($table) => {
     $table.increments('id')
     $table
-      .string('locale', 10)
+      .string('code', 10)
       .unique()
       .comment('Language abbr')
     $table
@@ -23,6 +23,10 @@ exports.up = function (knex) {
       .string('regional', 10)
       .comment('Regiolan code')
       .nullable()
+    $table
+      .boolean('yandex')
+      .comment(`flag for yandex translation`)
+      .defaultTo(false)
     $table.timestamps()
     $table
       .timestamp('deleted_at')
