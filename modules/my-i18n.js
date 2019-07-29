@@ -7,7 +7,7 @@ import { uniqBy, has, get, concat, isString } from 'lodash'
  * i locales disponibile.
  */
 export default async function myI18n (userOptions) {
-  const dbLocales = await Language.query().select(['locale as code']).orderBy('locale')
+  const dbLocales = await Language.query().select(['code']).orderBy('code')
   // data la natura del override order del modulo nuxt-i18n
   // bisogna modificare direttamente il options.i18n
   // per i parametri interessati

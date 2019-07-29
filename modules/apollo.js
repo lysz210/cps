@@ -12,7 +12,7 @@ const typeDefs = gql`
 
   type Locale {
     id: Int
-    locale: String!
+    code: String!
     name: String!
     script: String
     native: String

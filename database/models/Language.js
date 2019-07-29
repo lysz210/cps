@@ -13,11 +13,11 @@ export class Language extends Model {
   static get jsonSchema() {
     return {
       type: 'object',
-      required: ['locale', 'name'],
+      required: ['code', 'name'],
 
       properties: {
         id: { type: 'integer' },
-        locale: {
+        code: {
           type: 'string',
           minLength: 2,
           maxLength: 10

@@ -11,7 +11,7 @@
         <v-list-tile
           v-for="(item, i) in locales"
           :key="i"
-          :to="switchLocalePath(item.locale)"
+          :to="switchLocalePath(item.code)"
           router
           exact
         >
@@ -100,7 +100,7 @@ export default {
       query: gql`
         query {
           locales {
-            locale,
+            code,
             name,
             native
           }
