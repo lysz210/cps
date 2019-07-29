@@ -4,38 +4,35 @@
       v-model="drawer"
       :mini-variant="miniVariant"
       :clipped="clipped"
-      fixed
       app
     >
       <v-list>
-        <v-list-tile
+        <v-list-item
           v-for="(item, i) in locales"
           :key="i"
           :to="switchLocalePath(item.code)"
           router
           exact
         >
-          <v-list-tile-content>
-            <v-list-tile-title>
-              {{ item.locale }} - {{ item.name }}:{{ item.native }}
-            </v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
+          <v-list-item-content>
+            <v-list-item-title>
+              {{ item.code }} - {{ item.name }}:{{ item.native }}
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar :clipped-left="clipped" fixed app>
-      <v-toolbar-side-icon @click="drawer = !drawer" />
-      <v-btn icon @click.stop="miniVariant = !miniVariant">
-        <v-icon>{{ `chevron_${miniVariant ? 'right' : 'left'}` }}</v-icon>
-      </v-btn>
-      <v-btn icon @click.stop="clipped = !clipped">
-        <v-icon>web</v-icon>
-      </v-btn>
-      <v-btn icon @click.stop="fixed = !fixed">
-        <v-icon>remove</v-icon>
-      </v-btn>
-      <v-btn>{{ $i18n.locale }} {{ $t('hello') }}</v-btn>
-      <v-toolbar-title v-text="title" />
+    <v-app-bar :clipped-left="clipped" app>
+      <v-toolbar-title>
+        <v-btn
+          outlined
+          rounded
+          @click="drawer = !drawer"
+        >
+          {{ $i18n.locale }}
+        </v-btn>
+        {{ title }}
+      </v-toolbar-title>
       <v-spacer />
       <v-btn icon @click.stop="rightDrawer = !rightDrawer">
         <v-icon>menu</v-icon>
@@ -48,14 +45,14 @@
     </v-content>
     <v-navigation-drawer v-model="rightDrawer" :right="right" temporary fixed>
       <v-list>
-        <v-list-tile @click.native="right = !right">
-          <v-list-tile-action>
+        <v-list-item @click.native="right = !right">
+          <v-list-item-action>
             <v-icon light>
               compare_arrows
             </v-icon>
-          </v-list-tile-action>
-          <v-list-tile-title>Switch drawer (click me)</v-list-tile-title>
-        </v-list-tile>
+          </v-list-item-action>
+          <v-list-item-title>Switch drawer (click me)</v-list-item-title>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
     <v-footer :fixed="fixed" app>
@@ -71,7 +68,7 @@ export default {
   data() {
     return {
       locales: [],
-      clipped: false,
+      clipped: true,
       drawer: false,
       fixed: false,
       items: [
