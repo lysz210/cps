@@ -80,7 +80,7 @@ module.exports = {
     locales: ['en', 'it'],
     defaultLocale: 'it',
     vueI18n: {
-      fallbackLocale: 'en',
+      fallbackLocale: 'it',
       messages: {
         en: {
           hello: 'hello'

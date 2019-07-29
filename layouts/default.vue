@@ -31,11 +31,11 @@
         >
           {{ $i18n.locale }}
         </v-btn>
-        {{ title }}
+        {{ $t('cps.titolo') }}
       </v-toolbar-title>
       <v-spacer />
       <v-btn icon @click.stop="rightDrawer = !rightDrawer">
-        <v-icon>menu</v-icon>
+        <v-icon>search</v-icon>
       </v-btn>
     </v-app-bar>
     <v-content>
@@ -43,19 +43,7 @@
         <nuxt />
       </v-container>
     </v-content>
-    <v-navigation-drawer v-model="rightDrawer" :right="right" temporary fixed>
-      <v-list>
-        <v-list-item @click.native="right = !right">
-          <v-list-item-action>
-            <v-icon light>
-              compare_arrows
-            </v-icon>
-          </v-list-item-action>
-          <v-list-item-title>Switch drawer (click me)</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-    <v-footer :fixed="fixed" app>
+    <v-footer app>
       <span>&copy; 2019</span>
     </v-footer>
   </v-app>

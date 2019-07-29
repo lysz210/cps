@@ -1,5 +1,7 @@
 import { Language } from '../database/schema'
 import { uniqBy, has, get, concat, isString } from 'lodash'
+import cps from '../i18n/it/cps'
+
 /**
  * funzione asincrona per l'inserimento
  * del modulo nuxt-i18n. La funzione serve
@@ -15,6 +17,7 @@ export default async function myI18n (userOptions) {
   if (!has(this.options, 'i18n')) {
     this.options.i18n = {}
   }
+  this.options.i18n.vueI18n.messages.it.cps = cps
   // TODO: verificare che all'interno del message sia presente i message per il fallback
   // eventualmente recuperare i dati da db e anche cartella i18n ed effettuare merge dei valori
   // con preferenza su quelli in locale su i18n/<locale>
