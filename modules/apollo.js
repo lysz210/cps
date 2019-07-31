@@ -2,12 +2,14 @@ import { ApolloServer, gql } from 'apollo-server-express'
 import GraphQLJSON from 'graphql-type-json'
 
 import { Language } from '../database/schema'
+import localesIt from '../i18n/it/cps'
 
 const typeDefs = gql`
   scalar JSON
   type Query {
     "A simple type of getting started!"
     locales: [Locale]
+    translations(locale: String!, group: String!): [Translation]
   }
 
   type Locale {
@@ -19,14 +21,20 @@ const typeDefs = gql`
     regional: String
   }
 
-  type I18n {
-    locale: String
-    message: JSON
+  type Translation {
+    id: Int
+    locale: String!
+    namespace: String
+    group: String!
+    messages: JSON
   }
 `
 const resolvers = {
   Query: {
-    locales: () => Language.query()
+    locales: () => Language.query(),
+    translations: (obj, {locale, group}) => {
+      return [{locale, group, messages: localesIt}]
+    }
   },
   JSON: GraphQLJSON
   // JSONObject: GraphQLJSONObject
