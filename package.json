@@ -5,6 +5,7 @@
   "author": "Lingyong Sun",
   "private": true,
   "scripts": {
+    "ts": "ts-node database/models/Language.ts",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "precommit": "yarn lint",
     "test": "jest",
@@ -18,10 +19,15 @@
     "@nuxtjs/pwa": "^3.0.0-beta.16",
     "@nuxtjs/vuetify": "^1.1.1",
     "cross-env": "^5.2.0",
+    "dotenv": "^6.2.0-0",
+    "knex": "^0.18.0-next4",
     "koa": "^2.7.0",
     "nuxt": "^2.8.1",
     "nuxt-property-decorator": "^2.3.0",
+    "objection": "^1.6.9",
+    "sqlite3": "^4.0.9",
     "ts-node": "^8.3.0",
+    "typescript": "^3.5.3",
     "vuex-class": "^0.3.2"
   },
   "devDependencies": {
