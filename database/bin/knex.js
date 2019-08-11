@@ -18,11 +18,15 @@ Cmd
   .command('seed:run')
   .description('seed')
   .option('--specific <file>', 'run specific seed file')
-  .action(async () => {
-    consola.info(Cmd.opts())
+  .action(async (opts) => {
+    const { specific } = opts
+    consola.info(specific)
     consola.info('init')
     try {
-      await knex.seed.run()
+      const res = await knex.seed.run({
+        specific
+      })
+      consola.info(res)
       consola.info('DONE')
       process.exit(0)
     } catch (error) {
