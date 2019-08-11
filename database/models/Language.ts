@@ -4,15 +4,22 @@ import { TABLE_TIMESTAMPS } from './types'
 export const TABLE_NAME = 'translator_languages'
 
 export interface LanguageInterface {
-  id: number;
-  code: string;
-  name: string;
+  id?: number;
+  code?: string;
+  name?: string;
   script?: string;
   native?: string;
   regional?: string;
 }
 
-export class Language extends Model implements Language {
+export class Language extends Model implements LanguageInterface {
+  id?: number;
+  code?: string;
+  name?: string;
+  script?: string;
+  native?: string;
+  regional?: string;
+
   static get tableName() {
     return TABLE_NAME
   }
@@ -54,5 +61,4 @@ export class Language extends Model implements Language {
       }
     }
   }
-
 }

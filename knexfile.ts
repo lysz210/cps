@@ -1,28 +1,13 @@
-require('dotenv').config()
-require('ts-node').register({
+// injext .env
+// require = require("esm")(module/*, options*/)
+const TSNode = require('ts-node')
+TSNode.register({
+  extends: "../../tsconfig.json",
   compilerOptions: {
-    module: 'commonjs'
+    module: "commonjs",
   }
 })
-// injext .env
 
-const { resolve } = require('path')
+module.exports = require('./database/knexconfig').default
 
-// Update with your config settings.
-const { env } = process
-
-const DB_DIRNAME = env.DB_DIRNAME || ''
-const DB_DATABASE = env.DB_DATABASE || './dev.sqlite3'
-module.exports = {
-  client: env.DB_CONNECTION || 'sqlite3',
-  useNullAsDefault: true,
-  connection: {
-    filename: resolve('.', DB_DIRNAME, DB_DATABASE)
-  },
-  migrations: {
-    directory: resolve('.', DB_DIRNAME, 'migrations'),
-  },
-  seeds: {
-    directory: resolve('.', DB_DIRNAME, 'seeds')
-  }
-}
+export {}

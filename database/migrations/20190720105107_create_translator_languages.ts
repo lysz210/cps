@@ -1,8 +1,6 @@
 
 import { TABLE_NAME } from '../models/Language'
 
-console.log(TABLE_NAME)
-
 export async function up (knex) {
   return knex.schema.createTable(TABLE_NAME, ($table) => {
     $table.increments('id')
