@@ -3,6 +3,8 @@ import axios from 'axios';
 import querystring from 'querystring'
 import { merge } from 'lodash'
 import { config } from 'dotenv'
+import createObjectPaths from './create-object-paths'
+import { get } from 'lodash'
 
 config()
 // FIXME: da convertire in module es6
@@ -14,6 +16,9 @@ interface ITranslator {
 }
 
 export class Translate {
+
+  readonly maxCallPerMinute = 30
+  readonly minCallInterval = 60 * 1000 / this.maxCallPerMinute
 
   static defaultSourceLang: string = process.env.I18N_DEFAULT_LANG || 'it'
   readonly axios: any;
@@ -31,19 +36,37 @@ export class Translate {
     })
   }
 
-  _formatDirection (toLang, srcLang) {
+  private _formatDirection (toLang, srcLang) {
     return `${srcLang || Translate.defaultSourceLang}-${toLang}`
   }
 
-  async translate(text, toLang, srcLang, format = 'html') {
+  async *translateI18n(group: string, locales: string[]) {
+    const dictionary = require(`../i18n/${Translate.defaultSourceLang}/${group}`).default
+    const paths = createObjectPaths(dictionary)
+    let lastCallTime = new Date()
+    let currentCallTime
+    for (let item of paths) {
+      for (let locale of locales) {
+        const { text } = await this.translate(get(dictionary, item), locale)
+        currentCallTime = new Date()
+        let diff = this.minCallInterval - (currentCallTime.getTime() - lastCallTime.getTime())
+        // console.log('s', lastCallTime, 'e: ', currentCallTime, 'diff: ', diff)
+        yield await new Promise(resolve => setTimeout(() => resolve({item, text, locale}), Math.max(diff, 0)))
+        lastCallTime = currentCallTime
+      }
+    }
+    
+  }
+
+  async translate(text, toLang, srcLang?: string, format = 'html') {
     const formData = {
       key: this.apiKey,
       lang: this._formatDirection(toLang, srcLang),
       text,
       format
     }
-    console.log(formData)
-    return this.axios.post('translate', querystring.stringify(formData))
+    const { data } = await this.axios.post('translate', querystring.stringify(formData))
+    return data
   }
 
   async availableLangs(lang?: string) {
@@ -59,7 +82,6 @@ export default function createTranslator (configs?: any) {
     apiUrl: process.env.YANDEX_TRANSLATE_API_URL,
     apiKey: process.env.YANDEX_TRANSLATE_API_KEY
   }, configs)
-  console.log(configs, baseConfig)
   return new Translate(
     baseConfig.apiUrl,
     baseConfig.apiKey
