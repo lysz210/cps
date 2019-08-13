@@ -47,7 +47,8 @@ const config: NuxtConfiguration = {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
-    '@nuxtjs/eslint-module'
+    '@nuxtjs/eslint-module',
+    '~/modules/apollo',
   ],
   /*
    ** Axios module configuration
@@ -67,6 +68,16 @@ const config: NuxtConfiguration = {
       warning: colors.amber.base,
       error: colors.deepOrange.accent4,
       success: colors.green.accent3
+    }
+  },
+  /**
+   * apollo configs
+   */
+  apollo: {
+    clientConfigs: {
+      default: {
+        httpEndpoint: `${process.env.APP_URL}:3000/gql`
+      }
     }
   },
   /*

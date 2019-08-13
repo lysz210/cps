@@ -23,6 +23,7 @@
     "consola": "^2.10.1",
     "cross-env": "^5.2.0",
     "dotenv": "^6.2.0-0",
+    "graphql": "^14.4.2",
     "graphql-type-json": "^0.3.0",
     "knex": "^0.19.1",
     "koa": "^2.7.0",
