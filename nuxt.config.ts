@@ -49,6 +49,7 @@ const config: NuxtConfiguration = {
     '@nuxtjs/pwa',
     '@nuxtjs/eslint-module',
     '~/modules/apollo',
+    '~/modules/my-i18n'
   ],
   /*
    ** Axios module configuration
@@ -77,6 +78,24 @@ const config: NuxtConfiguration = {
     clientConfigs: {
       default: {
         httpEndpoint: `${process.env.APP_URL}:3000/gql`
+      }
+    }
+  },
+  /*
+   *
+   */
+  i18n: {
+    locales: ['en', 'it'],
+    defaultLocale: 'it',
+    vueI18n: {
+      fallbackLocale: 'it',
+      messages: {
+        en: {
+          hello: 'hello'
+        },
+        it: {
+          hello: 'ciao'
+        }
       }
     }
   },
