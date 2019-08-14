@@ -4,7 +4,8 @@ import querystring from 'querystring'
 import { merge } from 'lodash'
 import { config } from 'dotenv'
 import createObjectPaths from './create-object-paths'
-import { get } from 'lodash'
+import { get, first } from 'lodash'
+import { TranslationInterface } from '~/database/models/Translation';
 
 config()
 // FIXME: da convertire in module es6
@@ -130,7 +131,7 @@ export class Translate {
     return `${srcLang || Translate.defaultSourceLang}-${toLang}`
   }
 
-  async *translateI18n(group: string, locales: string[]) {
+  async *translateI18n(group: string, locales: string[]): AsyncIterableIterator<TranslationInterface> {
     const dictionary = require(`../i18n/${Translate.defaultSourceLang}/${group}`).default
     const paths = createObjectPaths(dictionary)
     let lastCallTime = new Date()
@@ -141,7 +142,7 @@ export class Translate {
         currentCallTime = new Date()
         let diff = this.minCallInterval - (currentCallTime.getTime() - lastCallTime.getTime())
         // console.log('s', lastCallTime, 'e: ', currentCallTime, 'diff: ', diff)
-        yield await new Promise(resolve => setTimeout(() => resolve({item, text, locale}), Math.max(diff, 0)))
+        yield await new Promise(resolve => setTimeout(() => resolve({group, item, text: first(text), locale}), Math.max(diff, 0)))
         lastCallTime = currentCallTime
       }
     }
@@ -156,6 +157,7 @@ export class Translate {
       format
     }
     const { data } = await this.axios.post('translate', querystring.stringify(formData))
+    console.log(data)
     return data
   }
 

@@ -1,9 +1,25 @@
 import { Model } from 'objection'
 import { TABLE_TIMESTAMPS } from './types'
+import { TableTimestampsInterface } from './base-intefacex'
 import { Language } from './Language'
 
 export const TABLE_NAME = 'translator_translations'
-export class Translation extends Model {
+
+export interface TranslationInterface extends TableTimestampsInterface {
+  id?: number;
+  locale?: string;
+  namespace?: string;
+  group?: string;
+  item?: string;
+  text?: string;
+  unstable?: boolean;
+  locked?: boolean;
+}
+export class Translation extends Model implements TranslationInterface {
+  group?: string;
+  item?: string;
+  text?: string;
+  
   static get tableName() {
     return TABLE_NAME
   }
@@ -15,7 +31,7 @@ export class Translation extends Model {
   static get jsonSchema() {
     return {
       type: 'object',
-      required: [],
+      required: ['locale', 'text', 'group'],
       properties: {
         id: { type: 'integer' },
         locale: {

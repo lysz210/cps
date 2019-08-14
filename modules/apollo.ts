@@ -1,9 +1,10 @@
 import { ApolloServer, gql } from 'apollo-server-express'
 import GraphQLJSON from 'graphql-type-json'
 
-import { Language } from '../database/schema'
+import { Language, Translation } from '../database/schema'
 import localesIt from '../i18n/it/cps'
 import Nuxt from 'nuxt'
+import { set } from 'lodash'
 
 const typeDefs = gql`
   scalar JSON
@@ -33,8 +34,10 @@ const typeDefs = gql`
 const resolvers = {
   Query: {
     locales: () => Language.query().where('yandex', true).orderBy('order').orderBy('code'),
-    translations: (obj, {locale, group}) => {
-      return [{locale, group, messages: localesIt}]
+    translations: async (obj, {locale, group}) => {
+      const dictionary = await Translation.query().where({group, locale})
+      const messages = dictionary.reduce((acc, {item, text}) => set(acc, item, text), {})
+      return [{locale, group, messages}]
     }
   },
   JSON: GraphQLJSON
