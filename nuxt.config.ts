@@ -1,5 +1,8 @@
+import dotenv from 'dotenv'
 import NuxtConfiguration from '@nuxt/config'
 import colors from 'vuetify/es5/util/colors'
+
+dotenv.config()
 
 const config: NuxtConfiguration = {
   mode: 'universal',
@@ -49,6 +52,7 @@ const config: NuxtConfiguration = {
     '@nuxtjs/pwa',
     '@nuxtjs/eslint-module',
     '~/modules/apollo',
+    '@nuxtjs/apollo',
     '~/modules/my-i18n'
   ],
   /*
