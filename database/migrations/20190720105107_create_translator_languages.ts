@@ -1,5 +1,6 @@
 
 import { TABLE_NAME } from '../models/Language'
+import { defaultCreateRemoteResolver } from 'graphql-tools';
 
 export async function up (knex) {
   return knex.schema.createTable(TABLE_NAME, ($table) => {
@@ -28,6 +29,10 @@ export async function up (knex) {
       .boolean('yandex')
       .comment(`flag for yandex translation`)
       .defaultTo(false)
+    $table
+      .integer('order')
+      .comment('primary sort for table')
+      .defaultTo(0)
     $table.timestamps(true, true)
     $table
       .timestamp('deleted_at')
