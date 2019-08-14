@@ -9,6 +9,7 @@
     "lint": "eslint --ext .ts,.js,.vue --ignore-path .gitignore .",
     "precommit": "yarn lint",
     "test": "jest",
+    "dev:rs": "cross-env NODE_ENV=development nodemon server/index.js --watch server",
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
@@ -38,6 +39,7 @@
     "vuex-class": "^0.3.2"
   },
   "devDependencies": {
+    "@mdi/js": "^4.0.96",
     "@nuxt/typescript": "^2.8.1",
     "@nuxtjs/eslint-config": "^0.0.1",
     "@nuxtjs/eslint-module": "^0.0.1",
