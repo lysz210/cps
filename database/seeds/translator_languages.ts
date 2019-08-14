@@ -6,22 +6,34 @@ import {
   has
 } from 'lodash'
 import Consola from 'consola'
-import consolaGlobalInstance from 'consola';
+import consolaGlobalInstance from 'consola'
+import i18nConfigs from '../../i18n/configs'
 
 export async function seed (knex: Knex): Promise<any> {
   Consola.info(`Seeding: ${Language.tableName}`)
+  const { primaryOrder } = i18nConfigs
+  const maxPrimaryOrder = primaryOrder.length
+  const mapOrder = primaryOrder.reduce((acc, key, index) => ({...acc, [key]: index - maxPrimaryOrder}), {})
   const t = createTranslate()
-  const { data: {
-    langs
-  } } = await t.availableLangs()
+  let langs
+  try {
+    throw new Error('err')
+    let { data } = await t.availableLangs()
+    langs = data.langs
+  } catch (error) {
+    Consola.error('Error on retrieve Yandex languages, default to cachedLocales', error)
+    langs = require('../../my-lib/yandex').cacheLocales
+  }
   Consola.info('Deleting data...')
   Consola.info(await Language.query(knex).delete())
   for (let lang of knownLanguages) {
     let langItem;
-    if (has(langs, lang.code)) {
+    // if (has(langs, lang.code)) {
+    if (true) {
       langItem = {
         ...lang,
-        yandex: true
+        yandex: true,
+        order: lang.code in mapOrder ? mapOrder[lang.code] : 0
       }
     } else {
       langItem = lang

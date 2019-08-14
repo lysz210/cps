@@ -32,7 +32,7 @@ const typeDefs = gql`
 `
 const resolvers = {
   Query: {
-    locales: () => Language.query().where('yandex', true),
+    locales: () => Language.query().where('yandex', true).orderBy('order').orderBy('code'),
     translations: (obj, {locale, group}) => {
       return [{locale, group, messages: localesIt}]
     }
