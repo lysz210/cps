@@ -4,8 +4,11 @@ import querystring from 'querystring'
 import { merge } from 'lodash'
 import { config } from 'dotenv'
 import createObjectPaths from './create-object-paths'
-import { get, first } from 'lodash'
-import { TranslationInterface } from '~/database/models/Translation';
+import { get, set, first, replace } from 'lodash'
+import { TranslationInterface } from '../database/models/Translation';
+import { Translation } from '../database/schema'
+import { QuesturaApi } from './questura';
+import md5 from 'md5'
 
 config()
 // FIXME: da convertire in module es6
@@ -108,11 +111,21 @@ export const cacheLocales = {
 
 export class Translate {
 
+  readonly praticaPlaceholder = '<pratica-id />'
+
   readonly maxCallPerMinute = 30
   readonly minCallInterval = 60 * 1000 / this.maxCallPerMinute
 
   static defaultSourceLang: string = process.env.I18N_DEFAULT_LANG || 'it'
   readonly axios: any;
+
+  private _questuraApi: any;
+  get questuraApi () {
+    if (!this._questuraApi) {
+      this._questuraApi = new QuesturaApi(process.env.QUESTURA_API_URL || '')
+    }
+    return this._questuraApi
+  }
 
   get API_KEY_PATTERN () {
     return /^trnsl[a-zA-Z0-9.]+/
@@ -167,6 +180,41 @@ export class Translate {
       ui: lang || Translate.defaultSourceLang
     }})
   }
+
+  async translateStatoPratica (pratica: string, locale: string) {
+    // TODO: preferibile avere la chiamata a questuraApi esterna
+    let response = await this.questuraApi.check(pratica)
+    // TODO: dinamizzare it con default lang | fallbackLocale
+    if (locale == 'it') {
+      return response
+    }
+    const descriptionPath = 'item.description'
+    const description = get(response, descriptionPath)
+    const isPraticaIn = description.includes(pratica)
+    let responseText = isPraticaIn ? replace(description, pratica, this.praticaPlaceholder) : description
+    let hash = md5(responseText)
+    const cached = await Translation.query().where({
+      group: 'questura',
+      item: hash,
+      locale
+    }).first()
+    let translatedText
+    if (cached) {
+      console.log("from cache")
+      translatedText = replace(cached.text, this.praticaPlaceholder, pratica)
+    } else {
+      let { text } = await this.translate(responseText, locale)
+      translatedText = first(text)
+      await Translation.query().insert({
+        group: 'questura',
+        locale,
+        text: translatedText,
+        item: hash
+      })
+    }
+    set(response, descriptionPath, replace(translatedText, this.praticaPlaceholder, pratica))
+    return response
+  }
 }
 
 export default function createTranslator (configs?: any) {
@@ -179,3 +227,12 @@ export default function createTranslator (configs?: any) {
     baseConfig.apiKey
   )
 }
+
+(async function main() {
+  let ty = createTranslator()
+  let p1 = '061534627074'
+  let p2 = '061521492973'
+  
+  let res = await ty.translateStatoPratica(p1, 'en')
+  console.info(res)
+})()

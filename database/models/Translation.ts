@@ -17,6 +17,7 @@ export interface TranslationInterface extends TableTimestampsInterface {
 }
 export class Translation extends Model implements TranslationInterface {
   group?: string;
+  locale?: string;
   item?: string;
   text?: string;
   
