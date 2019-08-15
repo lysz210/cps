@@ -73,9 +73,12 @@ export class QuesturaApi {
 
   async getFeed(pratica: string) {
     const params = new QuesturaQuery({ pratica })
-    return this.axios.get('stranieri', { params })
+    return this.axios.get('stranieri', { params }).then(({data}) => data)
+  }
+
+  async check(pratica: string) {
+    const { rss: { channel }} = await this.getFeed(pratica)
+    console.log(channel)
+    return channel
   }
 }
-
-let q = new QuesturaApi('http://questure.poliziadistato.it')
-q.getFeed('061534627074').then(res => res.data.rss.channel.item).then(console.log, console.error)
