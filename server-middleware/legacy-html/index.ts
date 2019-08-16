@@ -16,7 +16,7 @@ import createTraslate from '../../my-lib/yandex';
 
 export default async (req, res, next) => {
   try {
-    const { headers, _parsedUrl} = req
+    const { _parsedUrl} = req
     const q = parse(_parsedUrl.query)
     let t = createTraslate()
     let statoPratica
