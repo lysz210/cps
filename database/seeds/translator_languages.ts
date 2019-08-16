@@ -17,7 +17,6 @@ export async function seed (knex: Knex): Promise<any> {
   const t = createTranslate()
   let langs
   try {
-    throw new Error('err')
     let { data } = await t.availableLangs()
     langs = data.langs
   } catch (error) {
@@ -28,8 +27,7 @@ export async function seed (knex: Knex): Promise<any> {
   Consola.info(await Language.query(knex).delete())
   for (let lang of knownLanguages) {
     let langItem;
-    // if (has(langs, lang.code)) {
-    if (true) {
+    if (has(langs, lang.code)) {
       langItem = {
         ...lang,
         yandex: true,
