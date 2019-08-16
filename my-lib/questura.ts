@@ -78,7 +78,6 @@ export class QuesturaApi {
 
   async check(pratica: string) {
     const { rss: { channel }} = await this.getFeed(pratica)
-    console.log(channel)
     return channel
   }
 }
