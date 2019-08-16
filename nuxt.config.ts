@@ -39,6 +39,15 @@ const config: NuxtConfiguration = {
    */
   css: [],
   /*
+   ** Server side middleware
+   */
+  serverMiddleware: [
+    {
+      path: '/legacy',
+      handler: '~/server-middleware/legacy-html'
+    }
+  ],
+  /*
    ** Plugins to load before mounting the App
    */
   plugins: [
@@ -55,7 +64,8 @@ const config: NuxtConfiguration = {
     '@nuxtjs/eslint-module',
     '~/modules/apollo',
     '@nuxtjs/apollo',
-    '~/modules/my-i18n'
+    '~/modules/my-i18n',
+    '~/modules/legacy-html'
   ],
   /*
    ** Axios module configuration
@@ -96,6 +106,11 @@ const config: NuxtConfiguration = {
   i18n: {
     locales: ['en', 'it'],
     defaultLocale: 'it',
+    // Routes generation strategy, can be set to one of the following:
+    // - 'prefix_except_default': add locale prefix for every locale except default
+    // - 'prefix': add locale prefix for every locale
+    // - 'prefix_and_default': add locale prefix for every locale and default
+    strategy: 'prefix',
     vueI18n: {
       fallbackLocale: 'it',
       messages: {
