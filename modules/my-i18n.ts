@@ -10,7 +10,7 @@ import Nuxt from 'nuxt'
  * i locales disponibile.
  */
 export default async function myI18n (this: Nuxt, userOptions) {
-  const dbLocales = await Language.query().select(['code']).orderBy('code')
+  const dbLocales = await Language.query().where('yandex', true).select(['code']).orderBy('code')
   // data la natura del override order del modulo nuxt-i18n
   // bisogna modificare direttamente il options.i18n
   // per i parametri interessati
