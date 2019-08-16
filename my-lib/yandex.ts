@@ -170,7 +170,6 @@ export class Translate {
       format
     }
     const { data } = await this.axios.post('translate', querystring.stringify(formData))
-    console.log(data)
     return data
   }
 
@@ -188,32 +187,35 @@ export class Translate {
     if (locale == 'it') {
       return response
     }
-    const descriptionPath = 'item.description'
-    const description = get(response, descriptionPath)
-    const isPraticaIn = description.includes(pratica)
-    let responseText = isPraticaIn ? replace(description, pratica, this.praticaPlaceholder) : description
-    let hash = md5(responseText)
-    const cached = await Translation.query().where({
-      group: 'questura',
-      item: hash,
-      locale
-    }).first()
-    let translatedText
-    if (cached) {
-      console.log("from cache")
-      translatedText = replace(cached.text, this.praticaPlaceholder, pratica)
-    } else {
-      let { text } = await this.translate(responseText, locale)
-      translatedText = first(text)
-      await Translation.query().insert({
+    try {
+      const descriptionPath = 'item.description'
+      const description = get(response, descriptionPath)
+      const isPraticaIn = description.includes(pratica)
+      let responseText = isPraticaIn ? replace(description, pratica, this.praticaPlaceholder) : description
+      let hash = md5(responseText)
+      const cached = await Translation.query().where({
         group: 'questura',
-        locale,
-        text: translatedText,
-        item: hash
-      })
+        item: hash,
+        locale
+      }).first()
+      let translatedText
+      if (cached) {
+        translatedText = replace(cached.text, this.praticaPlaceholder, pratica)
+      } else {
+        let { text } = await this.translate(responseText, locale)
+        translatedText = first(text)
+        await Translation.query().insert({
+          group: 'questura',
+          locale,
+          text: translatedText,
+          item: hash
+        })
+      }
+      set(response, descriptionPath, replace(translatedText, this.praticaPlaceholder, pratica))
+      return response
+    } catch (error) {
+      return response
     }
-    set(response, descriptionPath, replace(translatedText, this.praticaPlaceholder, pratica))
-    return response
   }
 }
 
@@ -227,12 +229,3 @@ export default function createTranslator (configs?: any) {
     baseConfig.apiKey
   )
 }
-
-(async function main() {
-  let ty = createTranslator()
-  let p1 = '061534627074'
-  let p2 = '061521492973'
-  
-  let res = await ty.translateStatoPratica(p1, 'en')
-  console.info(res)
-})()
