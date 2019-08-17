@@ -1,0 +1,8 @@
+query StatoPratica($pratica: String!, $locale: String!) {
+  statoPratica(pratica: $pratica, locale: $locale) {
+    item {
+      description
+      pubDate
+    }
+  }
+}
