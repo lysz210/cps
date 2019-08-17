@@ -2,7 +2,7 @@ export function setQuery(state, q) {
   state.query = q
 }
 
-export function addResponses(state, response) {
+export function addResponse(state, response) {
   if (!Array.isArray(state.responses)) {
     state.responses = []
   }
