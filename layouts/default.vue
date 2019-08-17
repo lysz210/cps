@@ -1,61 +1,59 @@
 <template>
-  <v-app dark>
+  <v-app>
     <v-navigation-drawer
       v-model="drawer"
-      :mini-variant="miniVariant"
-      :clipped="clipped"
-      fixed
       app
     >
       <v-list>
-        <v-list-tile
-          v-for="(item, i) in items"
-          :key="i"
-          :to="item.to"
+        <v-list-item
+          v-for="locale in locales"
+          :key="locale.code"
+          :to="switchLocalePath(locale.code)"
           router
           exact
         >
-          <v-list-tile-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title v-text="item.title" />
-          </v-list-tile-content>
-        </v-list-tile>
+          <v-list-item-action>
+            {{ locale.code }}
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title v-text="locale.name + ': ' + locale.native" />
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar :clipped-left="clipped" fixed app>
-      <v-toolbar-side-icon @click="drawer = !drawer" />
-      <v-btn icon @click.stop="miniVariant = !miniVariant">
-        <v-icon>{{ `chevron_${miniVariant ? 'right' : 'left'}` }}</v-icon>
+    <v-app-bar
+      app
+    >
+      <!-- <v-toolbar-side-icon @click="drawer = !drawer" /> -->
+      <v-btn class="mr-2" outlined small rounded @click.stop="drawer = !drawer">
+        {{ $i18n.locale }}
       </v-btn>
-      <v-btn icon @click.stop="clipped = !clipped">
-        <v-icon>web</v-icon>
-      </v-btn>
-      <v-btn icon @click.stop="fixed = !fixed">
-        <v-icon>remove</v-icon>
-      </v-btn>
-      <v-toolbar-title v-text="$t('cps.titolo')" />
+      <v-toolbar-title ml-2>
+        {{ $t('cps.titolo') }}
+      </v-toolbar-title>
       <v-spacer />
       <v-btn icon @click.stop="rightDrawer = !rightDrawer">
         <v-icon>menu</v-icon>
       </v-btn>
-    </v-toolbar>
+    </v-app-bar>
     <v-content>
       <v-container>
+        <pre>
+          {{ translations }}
+        </pre>
         <nuxt />
       </v-container>
     </v-content>
     <v-navigation-drawer v-model="rightDrawer" :right="right" temporary fixed>
       <v-list>
-        <v-list-tile @click.native="right = !right">
-          <v-list-tile-action>
+        <v-list-item @click.native="right = !right">
+          <v-list-item-action>
             <v-icon light>
               compare_arrows
             </v-icon>
-          </v-list-tile-action>
-          <v-list-tile-title>Switch drawer (click me)</v-list-tile-title>
-        </v-list-tile>
+          </v-list-item-action>
+          <v-list-item-title>Switch drawer (click me)</v-list-item-title>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
     <v-footer :fixed="fixed" app>
@@ -65,11 +63,16 @@
 </template>
 
 <script>
+import translationQuery from '../database/graphql/client/query-translation'
+import localesQuery from '../database/graphql/client/query-locales'
+
 export default {
   data() {
     return {
-      clipped: false,
-      drawer: false,
+      translation: null,
+      locales: [],
+      clipped: true,
+      drawer: true,
       fixed: false,
       items: [
         {
@@ -87,6 +90,18 @@ export default {
       right: true,
       rightDrawer: false,
       title: 'Vuetify.js'
+    }
+  },
+  apollo: {
+    locales: {
+      query: localesQuery
+    },
+    translations: {
+      query: translationQuery,
+      variables: {
+        locale: 'zh',
+        group: 'cps'
+      }
     }
   }
 }
