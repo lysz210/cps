@@ -110,7 +110,7 @@ const config: NuxtConfiguration = {
     // - 'prefix_except_default': add locale prefix for every locale except default
     // - 'prefix': add locale prefix for every locale
     // - 'prefix_and_default': add locale prefix for every locale and default
-    strategy: 'prefix',
+    strategy: 'prefix_and_default',
     vueI18n: {
       fallbackLocale: 'it',
       messages: {
