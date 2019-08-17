@@ -22,12 +22,7 @@ const config: NuxtConfiguration = {
       }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      {
-        rel: 'stylesheet',
-        href:
-          'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons'
-      }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
   /*
@@ -37,7 +32,9 @@ const config: NuxtConfiguration = {
   /*
    ** Global CSS
    */
-  css: [],
+  css: [
+    '@/assets/style/app.scss'
+  ],
   /*
    ** Server side middleware
    */
@@ -86,9 +83,6 @@ const config: NuxtConfiguration = {
       error: colors.deepOrange.accent4,
       success: colors.green.accent3
     },
-    icons: {
-      iconfont: 'mdiSvg'
-    }
   },
   /**
    * apollo configs
