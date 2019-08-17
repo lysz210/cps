@@ -63,8 +63,8 @@
 </template>
 
 <script>
-import translationQuery from '../database/graphql/client/query-translation'
-import localesQuery from '../database/graphql/client/query-locales'
+import translationQuery from '~/database/graphql/i18n/client/query-translation'
+import localesQuery from '~/database/graphql/i18n/client/query-locales'
 
 export default {
   data() {
