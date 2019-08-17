@@ -1,9 +1,9 @@
 import { ApolloServer } from 'apollo-server-express'
 import Nuxt from 'nuxt'
 
-import i18n from '../database/graphql/i18n'
+import schema from '../database/graphql'
 
-const server = new ApolloServer(i18n)
+const server = new ApolloServer(schema)
 
 export default function apolloServer(this: Nuxt) {
   // console.log('installing ApolloServer')

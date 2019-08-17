@@ -2,7 +2,7 @@ import { gql } from 'apollo-server-express'
 
 export default gql`
 scalar JSON
-type Query {
+extend type Query {
   "A simple type of getting started!"
   locales: [Locale]
   translations(locale: String!, group: String!): [Translation]
