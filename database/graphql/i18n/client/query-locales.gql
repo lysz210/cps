@@ -1,7 +1,0 @@
-query {
-  locales {
-    code,
-    name,
-    native
-  }
-}

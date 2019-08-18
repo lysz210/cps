@@ -64,8 +64,7 @@
 </template>
 
 <script>
-import translationQuery from '~/database/graphql/i18n/client/query-translation'
-import localesQuery from '~/database/graphql/i18n/client/query-locales'
+import query from '~/database/graphql/i18n/client/query'
 
 export default {
   components: {
@@ -98,10 +97,10 @@ export default {
   },
   apollo: {
     locales: {
-      query: localesQuery
+      query: query.Locales
     },
     translations: {
-      query: translationQuery,
+      query: query.Translation,
       variables: {
         locale: 'zh',
         group: 'cps'
