@@ -16,7 +16,7 @@
             {{ locale.code }}
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title v-text="locale.name + ': ' + locale.native" />
+            <v-list-item-title v-text="locale.native" />
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -38,6 +38,7 @@
     </v-app-bar>
     <v-content>
       <v-container>
+        <questura-search />
         <pre>
           {{ translations }}
         </pre>
@@ -67,6 +68,9 @@ import translationQuery from '~/database/graphql/i18n/client/query-translation'
 import localesQuery from '~/database/graphql/i18n/client/query-locales'
 
 export default {
+  components: {
+    QuesturaSearch: () => import('~/components/questura/QuesturaSearch')
+  },
   data() {
     return {
       translation: null,

@@ -17,6 +17,7 @@
       <v-container fluid grid-list-lg>
         <v-layout row wrap>
           <v-flex v-for="(response, i) in activeResponses" :key="i" xs12>
+            <questura-response :response="response" />
             <pre>{{ response }}</pre>
           </v-flex>
         </v-layout>
@@ -30,7 +31,7 @@
 import { mdiBarcode } from '@mdi/js'
 import { debounce } from 'lodash'
 import { createNamespacedHelpers } from 'vuex'
-import query from '~/database/graphql/questura/client/query-statoPratica.gql'
+import query from '~/database/graphql/questura/client/query.gql'
 
 const {
   // mapState: questuraState,
@@ -40,6 +41,9 @@ const {
 } = createNamespacedHelpers('questura')
 
 export default {
+  components: {
+    QuesturaResponse: () => import('./StatoPratica')
+  },
   data() {
     return {
       mdiBarcode,
