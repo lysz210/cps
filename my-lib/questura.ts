@@ -2,6 +2,8 @@ import { get, has, set, trim } from 'lodash'
 import axios from 'axios'
 import parser from 'fast-xml-parser'
 import { decode } from 'he'
+import { replace } from 'lodash'
+import createTranslator, { Translate } from './yandex'
 
 export interface QuesturaQueryInterface {
   pratica: string;
@@ -23,7 +25,7 @@ export class QuesturaQuery implements QuesturaQueryInterface {
   }
 }
 
-const testData = `'<?xml version="1.0" encoding="UTF-8" ?>
+const testData = `<?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0">
 	<channel>
 	<title>Permesso di soggiorno</title> 
@@ -50,34 +52,77 @@ const testData = `'<?xml version="1.0" encoding="UTF-8" ?>
 	</item>
 	
 	</channel>
-</rss>'`
+</rss>`
+
+export interface IRss {
+  channel: IStatoPratica
+}
+
+export interface IBasePratica {
+  title: string
+  link: string
+  description: string
+}
+
+export interface IStatoPratica extends IBasePratica {
+  language: string
+  item: IDettaglioPratica
+}
+
+export interface IDettaglioPratica extends IBasePratica {
+  guid: string
+  pubDate: string
+}
 
 export class QuesturaApi {
+  readonly cdataTagRe = /<!\[CDATA\[|\]\]>/ig
+
+  readonly praticaPlaceholder = '<pratica-id />'
+
   axios: any;
+  translator: Translate
 
   constructor (readonly baseURL: string) {
     this.axios = axios.create({
       baseURL: this.baseURL,
-      responseType: 'document',
-      transformResponse (data) {
-        let rss = parser.parse(data)
-        let basePath = 'rss.channel.item'
-        let descrizionePath = `${basePath}.description`
-        if (has(rss, descrizionePath)) {
-          set(rss, descrizionePath, trim(decode(get(rss, descrizionePath))))
-        }
-        return rss
-      }
     })
+    this.translator = createTranslator()
   }
 
-  async getFeed(pratica: string) {
+  private _transformResponse (data): IRss {
+    let rss = parser.parse(data)
+    let basePath = 'rss.channel.item'
+    let descrizionePath = `${basePath}.description`
+    if (has(rss, descrizionePath)) {
+      set(rss, descrizionePath, trim(decode(get(rss, descrizionePath))))
+    }
+    return rss
+  }
+
+  async getFeed(pratica: string): Promise<string> {
     const params = new QuesturaQuery({ pratica })
     return this.axios.get('stranieri', { params }).then(({data}) => data)
   }
 
-  async check(pratica: string) {
-    const { rss: { channel }} = await this.getFeed(pratica)
-    return channel
+  async translate(pratica: string, locale: string): Promise<IStatoPratica> {
+    // yandex translate lascia i testi in cdata completamente invariati
+    // per garantire che vengano tradotti bisogna toglierli da cdata
+    let feed = replace(await this.getFeed(pratica), this.cdataTagRe, '')
+    // sostituisce la pratica con un placeholder per garantire che non sia
+    // presente durante la traduzione
+    feed = replace(feed, pratica, this.praticaPlaceholder)
+
+    let translated
+    try {
+      translated= await this.translator.translateStatoPratica(feed, locale)
+    } catch (err) {
+      console.error('translation error', err, 'ORIGINAL RESPONSE WILL BE USED')
+      translated = feed
+    }
+    // reinserimento del numero pratica
+    translated = replace(translated, this.praticaPlaceholder, pratica)
+
+    let translatedfeedObject = this._transformResponse(translated)
+    return translatedfeedObject.channel
   }
 }

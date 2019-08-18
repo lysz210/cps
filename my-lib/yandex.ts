@@ -4,14 +4,13 @@ import querystring from 'querystring'
 import { merge } from 'lodash'
 import { config } from 'dotenv'
 import createObjectPaths from './create-object-paths'
-import { get, set, first, replace } from 'lodash'
+import { get, first, replace, join } from 'lodash'
 import { TranslationInterface } from '../database/models/Translation';
 import { Translation } from '../database/schema'
-import { QuesturaApi } from './questura';
 import md5 from 'md5'
 
 config()
-// FIXME: da convertire in module es6
+
 interface ITranslator {
   apiUrl?: string;
   apiKey?: string;
@@ -109,23 +108,13 @@ export const cacheLocales = {
   "ko": "Korean"
 }
 
-export class Translate {
-
-  readonly praticaPlaceholder = '<pratica-id />'
+export class Translate implements ITranslator {
 
   readonly maxCallPerMinute = 30
   readonly minCallInterval = 60 * 1000 / this.maxCallPerMinute
 
   static defaultSourceLang: string = process.env.I18N_DEFAULT_LANG || 'it'
   readonly axios: any;
-
-  private _questuraApi: any;
-  get questuraApi () {
-    if (!this._questuraApi) {
-      this._questuraApi = new QuesturaApi(process.env.QUESTURA_API_URL || '')
-    }
-    return this._questuraApi
-  }
 
   get API_KEY_PATTERN () {
     return /^trnsl[a-zA-Z0-9.]+/
@@ -140,7 +129,7 @@ export class Translate {
     })
   }
 
-  private _formatDirection (toLang, srcLang) {
+  private _formatDirection (toLang: string, srcLang?: string) {
     return `${srcLang || Translate.defaultSourceLang}-${toLang}`
   }
 
@@ -180,42 +169,33 @@ export class Translate {
     }})
   }
 
-  async translateStatoPratica (pratica: string, locale: string) {
-    // TODO: preferibile avere la chiamata a questuraApi esterna
-    let response = await this.questuraApi.check(pratica)
-    // TODO: dinamizzare it con default lang | fallbackLocale
-    if (locale == 'it') {
-      return response
+  /**
+   * questo metodo non conosce effettivamente la forma dei dati ricevuto
+   * importante e' che il dato in input sia una string xml valida
+   * @param xml
+   */
+  async translateStatoPratica (xml: string, locale: string): Promise<string> {
+    // il hash utilizza esclusivamente i caratteri significativi
+    // ignorando caratteri bianchi usati per la formattazione
+    // sostituendo tutti i caratteri di spaziatura singoli
+    // o consecutivi in un'unico spazio ' '
+    let hash = md5(replace(xml, /\s+/g, ' '))
+    let response: string
+    const cached = await Translation.query().where({
+      group: 'questura',
+      item: hash,
+      locale
+    }).first()
+    if (cached) {
+      response = cached.text || xml
+    } else {
+      let { text } = await this.translate(xml, locale)
+  
+      response = join(text)
     }
-    try {
-      const descriptionPath = 'item.description'
-      const description = get(response, descriptionPath)
-      const isPraticaIn = description.includes(pratica)
-      let responseText = isPraticaIn ? replace(description, pratica, this.praticaPlaceholder) : description
-      let hash = md5(responseText)
-      const cached = await Translation.query().where({
-        group: 'questura',
-        item: hash,
-        locale
-      }).first()
-      let translatedText
-      if (cached) {
-        translatedText = replace(cached.text, this.praticaPlaceholder, pratica)
-      } else {
-        let { text } = await this.translate(responseText, locale)
-        translatedText = first(text)
-        await Translation.query().insert({
-          group: 'questura',
-          locale,
-          text: translatedText,
-          item: hash
-        })
-      }
-      set(response, descriptionPath, replace(translatedText, this.praticaPlaceholder, pratica))
-      return response
-    } catch (error) {
-      return response
-    }
+
+    return response
+
   }
 }
 
