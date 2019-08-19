@@ -63,12 +63,12 @@
   </v-app>
 </template>
 
-<script>
-import query from '~/database/graphql/i18n/client/query'
+<script lang="ts">
+import query from '~/database/graphql/i18n/client/query.gql'
 
 export default {
   components: {
-    QuesturaSearch: () => import('~/components/questura/QuesturaSearch')
+    QuesturaSearch: () => import('~/components/questura/QuesturaSearch.vue')
   },
   data() {
     return {
