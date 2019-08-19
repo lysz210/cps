@@ -29,7 +29,7 @@
       "@types/node",
       "@nuxt/vue-app",
       "@nuxtjs/vuetify",
-      "apollo-vue"
+      "vue-apollo"
     ]
   }
 }
