@@ -1,13 +1,11 @@
-import { config } from 'dotenv'
 import { resolve } from 'path'
+import env from '../.env.json'
 
-config()
-
-const { env: {
+const {
   DB_DIRNAME = '',
   DB_DATABASE = './dev.sqlite3',
   DB_CONNECTION = 'sqlite3'
-} } = process
+} = env
 
 export default {
   client: DB_CONNECTION,

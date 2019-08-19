@@ -1,11 +1,10 @@
-import dotenv from 'dotenv'
 import NuxtConfiguration from '@nuxt/config'
 import colors from 'vuetify/es5/util/colors'
-
-dotenv.config()
+import env from './.env.json'
 
 const config: NuxtConfiguration = {
   mode: 'universal',
+  env,
   /*
    ** Headers of the page
    */
@@ -90,7 +89,7 @@ const config: NuxtConfiguration = {
   apollo: {
     clientConfigs: {
       default: {
-        httpEndpoint: `${process.env.APP_URL}:3000/gql`
+        httpEndpoint: `${env.APP_URL}:3000/gql`
       }
     }
   },

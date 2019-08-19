@@ -5118,11 +5118,6 @@ dot-prop@^4.1.0, dot-prop@^4.1.1:
   dependencies:
     is-obj "^1.0.0"
 
-dotenv@^6.2.0-0:
-  version "6.2.0-0"
-  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-6.2.0-0.tgz#c002105343749a1cbef7f2683d850593d73c8146"
-  integrity sha512-/J1ln0ykunyY838UlOKcFWEbbHu0BRA2unrw0JBMhmEXIG0bsXeGvA+QyA73LWxzY6AjkXcEYDaiBA2xVyWo/g==
-
 dotenv@^8.0.0:
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-8.0.0.tgz#ed310c165b4e8a97bb745b0a9d99c31bda566440"
