@@ -1,6 +1,6 @@
 import { TABLE_NAME } from '../models/Translation'
 
-export async function up ({ schema }) {
+export function up ({ schema }) {
   return schema.createTable(TABLE_NAME, ($table) => {
     $table.increments('id')
     $table.string('locale', 10)
@@ -23,6 +23,6 @@ export async function up ({ schema }) {
   })
 }
 
-export async function down ({ schema }) {
+export function down ({ schema }) {
   return schema.dropTableIfExists(TABLE_NAME)
 }

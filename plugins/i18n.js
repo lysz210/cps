@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 
 export default function ({ app }) {
-  app.i18n.beforeLanguageSwitch = async (old, newLocale) => {
+  app.i18n.beforeLanguageSwitch = async (_old, newLocale) => {
     // TODO: richiede maggiori attenzione all'inserimento
     // la query va migliorata anche lato server
     // FIXME: delete consoles

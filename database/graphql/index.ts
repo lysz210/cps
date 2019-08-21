@@ -13,6 +13,6 @@ type Mutation {
 `
 
 export default {
-  typeDefs: [ root, ...typeDefs],
+  typeDefs: [root, ...typeDefs],
   resolvers
 }

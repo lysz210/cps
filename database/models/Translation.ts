@@ -17,19 +17,22 @@ export interface TranslationInterface extends TableTimestampsInterface {
 }
 export class Translation extends Model implements TranslationInterface {
   group?: string;
+
   locale?: string;
+
   item?: string;
+
   text?: string;
-  
-  static get tableName() {
+
+  static get tableName () {
     return TABLE_NAME
   }
 
-  static get idColumn() {
+  static get idColumn () {
     return 'id'
   }
 
-  static get jsonSchema() {
+  static get jsonSchema () {
     return {
       type: 'object',
       required: ['locale', 'text', 'group'],
@@ -66,7 +69,7 @@ export class Translation extends Model implements TranslationInterface {
     }
   }
 
-  static get relationsMappings() {
+  static get relationsMappings () {
     return {
       owner: {
         relation: Model.BelongsToOneRelation,

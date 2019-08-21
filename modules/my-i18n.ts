@@ -1,7 +1,7 @@
-import { Language } from '../database/schema'
 import { uniqBy, has, get, concat, isString } from 'lodash'
-import cps from '../i18n/it/cps'
 import Nuxt from 'nuxt'
+import { Language } from '../database/schema'
+import cps from '../i18n/it/cps'
 
 /**
  * funzione asincrona per l'inserimento
@@ -14,7 +14,7 @@ export default async function myI18n (this: Nuxt, userOptions) {
   // data la natura del override order del modulo nuxt-i18n
   // bisogna modificare direttamente il options.i18n
   // per i parametri interessati
-  let locales = concat(get(this.options, 'i18n.locales', []), get(userOptions, 'locales', []), dbLocales)
+  const locales = concat(get(this.options, 'i18n.locales', []), get(userOptions, 'locales', []), dbLocales)
   if (!has(this.options, 'i18n')) {
     this.options.i18n = {}
   }
@@ -24,7 +24,7 @@ export default async function myI18n (this: Nuxt, userOptions) {
   // con preferenza su quelli in locale su i18n/<locale>
   // i valori in userOptions e options vengono considerati quelli di default per cui il merge sara'
   // messages[locale]: {...userOptions.messages[locale], ...this.options.i18n.vueI18n.messages[locale], ...DBLocales, ...FSLocales}
-  this.options.i18n.locales = uniqBy(locales.map(locale => isString(locale) ? { code: locale } : locale ), localeObject => localeObject.code)
+  this.options.i18n.locales = uniqBy(locales.map(locale => isString(locale) ? { code: locale } : locale), localeObject => localeObject.code)
   this.requireModule([
     'nuxt-i18n',
     userOptions

@@ -1,8 +1,8 @@
-import NuxtConfiguration from '@nuxt/config'
+import { Configuration } from '@nuxt/types'
 import colors from 'vuetify/es5/util/colors'
 import env from './.env.json'
 
-const config: NuxtConfiguration = {
+const config: Configuration = {
   mode: 'universal',
   env,
   /*
@@ -47,7 +47,7 @@ const config: NuxtConfiguration = {
    ** Plugins to load before mounting the App
    */
   plugins: [
-    { src: '~/plugins/i18n.js'}
+    { src: '~/plugins/i18n.js' }
   ],
   /*
    ** Nuxt.js modules
@@ -81,7 +81,7 @@ const config: NuxtConfiguration = {
       warning: colors.amber.base,
       error: colors.deepOrange.accent4,
       success: colors.green.accent3
-    },
+    }
   },
   /**
    * apollo configs
@@ -123,8 +123,11 @@ const config: NuxtConfiguration = {
     /*
      ** You can extend webpack config here
      */
-    extend(config, ctx) {}
-  }
+    extend (_config, _ctx) {}
+  },
+  buildModules: [
+    '@nuxt/typescript-build'
+  ]
 }
 
 export default config

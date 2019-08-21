@@ -14,21 +14,26 @@ export interface LanguageInterface {
 
 export class Language extends Model implements LanguageInterface {
   id?: number;
+
   code?: string;
+
   name?: string;
+
   script?: string;
+
   native?: string;
+
   regional?: string;
 
-  static get tableName() {
+  static get tableName () {
     return TABLE_NAME
   }
 
-  static get idColumn() {
+  static get idColumn () {
     return 'id'
   }
 
-  static get jsonSchema() {
+  static get jsonSchema () {
     return {
       type: 'object',
       required: ['code', 'name'],

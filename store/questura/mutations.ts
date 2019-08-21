@@ -1,18 +1,18 @@
-export function setQuery(state, q) {
+export function setQuery (state, q) {
   state.query = q
 }
 
-export function addResponse(state, response) {
+export function addResponse (state, response) {
   if (!Array.isArray(state.responses)) {
     state.responses = []
   }
   state.responses.unshift(response)
 }
 
-export function setErrors(state, errors) {
+export function setErrors (state, errors) {
   state.errors = errors
 }
 
-export function setShowCard(state, show) {
+export function setShowCard (state, show) {
   state.showCard = show
 }

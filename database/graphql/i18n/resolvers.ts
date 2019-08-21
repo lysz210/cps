@@ -1,11 +1,11 @@
 
 import GraphQLJSON from 'graphql-type-json'
-import { Language, Translation } from '../../schema'
 import { set } from 'lodash'
+import { Language, Translation } from '../../schema'
 
 export const Query = {
   locales: () => Language.query().where('yandex', true).orderBy('order').orderBy('code'),
-  translations: async (obj, { locale, group }) => {
+  translations: async (_obj, { locale, group }) => {
     const dictionary = await Translation.query().where({ group, locale })
     const messages = dictionary.reduce((acc, { item, text }) => set(acc, item, text), {})
     return [{ locale, group, messages }]

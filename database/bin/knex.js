@@ -1,14 +1,13 @@
 const TSNode = require('ts-node')
 TSNode.register({
-  extends: "../../tsconfig.json",
+  extends: '../../tsconfig.json',
   compilerOptions: {
-    module: "commonjs",
+    module: 'commonjs'
   }
 })
 
 const consola = require('consola')
 const Cmd = require('commander')
-const cfg = require('../knexconfig').default
 const { knex } = require('../schema')
 
 Cmd

@@ -45,7 +45,7 @@ export default {
   components: {
     StatoPratica: () => import('./StatoPratica.vue')
   },
-  data() {
+  data () {
     return {
       mdiBarcode,
       numeroPratica: null

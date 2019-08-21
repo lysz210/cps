@@ -1,23 +1,22 @@
-import knownLanguages from '../../i18n/known_locales.json'
-import { Language } from '../models/Language'
 import * as Knex from 'knex'
-import createTranslate from '../../my-lib/yandex'
 import {
   has
 } from 'lodash'
 import Consola from 'consola'
-import consolaGlobalInstance from 'consola'
+import createTranslate from '../../my-lib/yandex'
+import { Language } from '../models/Language'
+import knownLanguages from '../../i18n/known_locales.json'
 import i18nConfigs from '../../i18n/configs'
 
 export async function seed (knex: Knex): Promise<any> {
   Consola.info(`Seeding: ${Language.tableName}`)
   const { primaryOrder } = i18nConfigs
   const maxPrimaryOrder = primaryOrder.length
-  const mapOrder = primaryOrder.reduce((acc, key, index) => ({...acc, [key]: index - maxPrimaryOrder}), {})
+  const mapOrder = primaryOrder.reduce((acc, key, index) => ({ ...acc, [key]: index - maxPrimaryOrder }), {})
   const t = createTranslate()
   let langs
   try {
-    let { data } = await t.availableLangs()
+    const { data } = await t.availableLangs()
     langs = data.langs
   } catch (error) {
     Consola.error('Error on retrieve Yandex languages, default to cachedLocales', error)
@@ -25,8 +24,8 @@ export async function seed (knex: Knex): Promise<any> {
   }
   Consola.info('Deleting data...')
   Consola.info(await Language.query(knex).delete())
-  for (let lang of knownLanguages) {
-    let langItem;
+  for (const lang of knownLanguages) {
+    let langItem
     if (has(langs, lang.code)) {
       langItem = {
         ...lang,
@@ -40,6 +39,6 @@ export async function seed (knex: Knex): Promise<any> {
     await Language.query(knex).insert(langItem)
     Consola.info('Inserted', lang.code)
   }
-  consolaGlobalInstance.success(`${Language.tableName} seeded`)
+  Consola.success(`${Language.tableName} seeded`)
   return true
 }

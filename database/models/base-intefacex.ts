@@ -1,3 +1,4 @@
+/* eslint camelcase: ["error", {allow: ["\w+_at"]}] */
 export interface SoftDeleteInterface {
   deleted_at?: Date;
 }

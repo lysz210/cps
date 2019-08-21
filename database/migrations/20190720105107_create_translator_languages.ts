@@ -1,8 +1,7 @@
 
 import { TABLE_NAME } from '../models/Language'
-import { defaultCreateRemoteResolver } from 'graphql-tools';
 
-export async function up (knex) {
+export function up (knex) {
   return knex.schema.createTable(TABLE_NAME, ($table) => {
     $table.increments('id')
     $table
@@ -41,6 +40,6 @@ export async function up (knex) {
   })
 }
 
-export async function down ({ schema }) {
+export function down ({ schema }) {
   return schema.dropTableIfExists(TABLE_NAME)
 }

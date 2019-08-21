@@ -14,7 +14,7 @@ export default {
     filename: resolve('.', DB_DIRNAME, DB_DATABASE)
   },
   migrations: {
-    directory: resolve('.', DB_DIRNAME, 'migrations'),
+    directory: resolve('.', DB_DIRNAME, 'migrations')
   },
   seeds: {
     directory: resolve('.', DB_DIRNAME, 'seeds')

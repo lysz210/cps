@@ -70,7 +70,7 @@ export default {
   components: {
     QuesturaSearch: () => import('~/components/questura/QuesturaSearch.vue')
   },
-  data() {
+  data () {
     return {
       translation: null,
       locales: [],
@@ -106,6 +106,9 @@ export default {
         group: 'cps'
       }
     }
+  },
+  mounted () {
+    console.log(process.env.QUESTURA_API_URL)
   }
 }
 </script>

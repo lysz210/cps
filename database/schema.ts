@@ -1,6 +1,6 @@
-import configs from './knexconfig'
 import Knex from 'knex'
 import { Model } from 'objection'
+import configs from './knexconfig'
 
 /**
  * global db connection manager
