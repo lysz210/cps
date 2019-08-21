@@ -1,5 +1,5 @@
 import { uniqBy, has, get, concat, isString } from 'lodash'
-import Nuxt from 'nuxt'
+import { Module } from '@nuxt/types'
 import { Language } from '../database/schema'
 import cps from '../i18n/it/cps'
 
@@ -9,7 +9,7 @@ import cps from '../i18n/it/cps'
  * per generare in modo dinamico attraverso il db
  * i locales disponibile.
  */
-export default async function myI18n (this: Nuxt, userOptions) {
+const i18nModule: Module<any> = async function myI18n (userOptions) {
   const dbLocales = await Language.query().where('yandex', true).select(['code']).orderBy('code')
   // data la natura del override order del modulo nuxt-i18n
   // bisogna modificare direttamente il options.i18n
@@ -30,3 +30,4 @@ export default async function myI18n (this: Nuxt, userOptions) {
     userOptions
   ])
 }
+export default i18nModule
