@@ -1,7 +1,7 @@
 // TODO: usare il URL.SearchParam
 import querystring from 'querystring'
 import axios from 'axios'
-import { merge, get, first, replace, join } from 'lodash'
+import { get, first, replace, join } from 'lodash'
 import { config } from 'dotenv'
 
 import md5 from 'md5'
@@ -180,6 +180,7 @@ export class Translate implements ITranslator {
     // sostituendo tutti i caratteri di spaziatura singoli
     // o consecutivi in un'unico spazio ' '
     const hash = md5(replace(xml, /\s+/g, ' '))
+    console.log(hash, xml)
     let response: string
     const cached = await Translation.query().where({
       group: 'questura',
@@ -198,13 +199,9 @@ export class Translate implements ITranslator {
   }
 }
 
-export default function createTranslator (configs?: any) {
-  const baseConfig = merge({}, {
-    apiUrl: process.env.YANDEX_TRANSLATE_API_URL,
-    apiKey: process.env.YANDEX_TRANSLATE_API_KEY
-  }, configs)
+export default function createTranslator (configs) {
   return new Translate(
-    baseConfig.apiUrl,
-    baseConfig.apiKey
+    configs.YANDEX_TRANSLATE_API_URL || '',
+    configs.YANDEX_TRANSLATE_API_KEY || ''
   )
 }

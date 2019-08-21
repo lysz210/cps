@@ -3,10 +3,11 @@ import Consola from 'consola'
 import { Translation } from '../models/Translation'
 import { Language } from '../models/Language'
 import createTranslate from '../../my-lib/yandex'
+import configs from '../../.env.json'
 
 export async function seed (knex: Knex): Promise<any> {
   Consola.info(`Seeding: ${Translation.tableName}`)
-  const t = createTranslate()
+  const t = createTranslate(configs)
 
   const langs = await Language.query(knex).where('yandex', true).orderBy('order').limit(6)
   // return true

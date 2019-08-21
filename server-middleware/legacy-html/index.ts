@@ -10,12 +10,13 @@ import _, {
 } from 'lodash'
 import { Language } from '../../database/schema'
 import createTraslate from '../../my-lib/yandex'
+import configs from '../../.env.json'
 
 export default async (req, res, next) => {
   try {
     const { _parsedUrl } = req
     const q = parse(_parsedUrl.query)
-    const t = createTraslate()
+    const t = createTraslate(configs)
     let statoPratica
     const lang = get(q, 'lang', 'it')
     // const reqUrl = new URL(req._parsedUrl)

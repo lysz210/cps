@@ -61,7 +61,9 @@ export class QuesturaQuery implements QuesturaQueryInterface {
 // </rss>`
 
 export interface IRss {
-  channel: IStatoPratica
+  rss: {
+    channel: IStatoPratica
+  }
 }
 
 export interface IBasePratica {
@@ -83,17 +85,17 @@ export interface IDettaglioPratica extends IBasePratica {
 export class QuesturaApi {
   readonly cdataTagRe = /<!\[CDATA\[|\]\]>/ig
 
-  readonly praticaPlaceholder = '<pratica-id />'
+  readonly praticaPlaceholder = '{pl4c3h0ld3r}'
 
   axios: any;
 
   translator: Translate
 
-  constructor (readonly baseURL: string) {
+  constructor (configs) {
     this.axios = axios.create({
-      baseURL: this.baseURL
+      baseURL: configs.QUESTURA_API_URL || ''
     })
-    this.translator = createTranslator()
+    this.translator = createTranslator(configs)
   }
 
   private _transformResponse (data): IRss {
@@ -129,8 +131,9 @@ export class QuesturaApi {
     }
     // reinserimento del numero pratica
     translated = replace(translated, this.praticaPlaceholder, pratica)
-
+    // console.log(translated)
     const translatedfeedObject = this._transformResponse(translated)
-    return translatedfeedObject.channel
+    console.log(translatedfeedObject)
+    return get(translatedfeedObject, 'rss.channel')
   }
 }

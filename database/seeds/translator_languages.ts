@@ -7,13 +7,14 @@ import createTranslate from '../../my-lib/yandex'
 import { Language } from '../models/Language'
 import knownLanguages from '../../i18n/known_locales.json'
 import i18nConfigs from '../../i18n/configs'
+import configs from '../../.env.json'
 
 export async function seed (knex: Knex): Promise<any> {
   Consola.info(`Seeding: ${Language.tableName}`)
   const { primaryOrder } = i18nConfigs
   const maxPrimaryOrder = primaryOrder.length
   const mapOrder = primaryOrder.reduce((acc, key, index) => ({ ...acc, [key]: index - maxPrimaryOrder }), {})
-  const t = createTranslate()
+  const t = createTranslate(configs)
   let langs
   try {
     const { data } = await t.availableLangs()
