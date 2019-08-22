@@ -131,9 +131,7 @@ export class QuesturaApi {
     }
     // reinserimento del numero pratica
     translated = replace(translated, this.praticaPlaceholder, pratica)
-    // console.log(translated)
     const translatedfeedObject = this._transformResponse(translated)
-    console.log(translatedfeedObject)
     return get(translatedfeedObject, 'rss.channel')
   }
 }

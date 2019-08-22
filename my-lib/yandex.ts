@@ -144,7 +144,6 @@ export class Translate implements ITranslator {
         const { text } = await this.translate(get(dictionary, item), locale)
         currentCallTime = new Date()
         const diff = this.minCallInterval - (currentCallTime.getTime() - lastCallTime.getTime())
-        // console.log('s', lastCallTime, 'e: ', currentCallTime, 'diff: ', diff)
         yield await new Promise(resolve => setTimeout(() => resolve({ group, item, text: first(text), locale }), Math.max(diff, 0)))
         lastCallTime = currentCallTime
       }
@@ -180,7 +179,6 @@ export class Translate implements ITranslator {
     // sostituendo tutti i caratteri di spaziatura singoli
     // o consecutivi in un'unico spazio ' '
     const hash = md5(replace(xml, /\s+/g, ' '))
-    console.log(hash, xml)
     let response: string
     const cached = await Translation.query().where({
       group: 'questura',
