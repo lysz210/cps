@@ -63,11 +63,18 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
+import consola from 'consola'
 import query from '~/database/graphql/i18n/client/query.gql'
 
 @Component({
   components: {
     QuesturaSearch: () => import('~/components/questura/QuesturaSearch.vue')
+  },
+
+  apollo: {
+    locales: {
+      query: query.Locales
+    }
   }
 })
 export default class LayoutDefault extends Vue {
@@ -85,14 +92,8 @@ export default class LayoutDefault extends Vue {
 
   rightDrawer: boolean = false
 
-  apollo: any = {
-    locales: {
-      query: query.Locales
-    }
-  }
-
   mounted () {
-    console.log(process.env.QUESTURA_API_URL)
+    consola.info(process.env.QUESTURA_API_URL)
   }
 }
 </script>

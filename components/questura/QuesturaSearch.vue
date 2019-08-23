@@ -26,7 +26,6 @@
         </v-layout>
       </v-container>
     </v-card>
-    {{ numeroPratica }}
   </v-card>
 </template>
 
