@@ -87,6 +87,9 @@ export class QuesturaApi {
 
   readonly praticaPlaceholder = '{pl4c3h0ld3r}'
 
+  readonly pubDateRe = /<pubDate>.*?<\/pubDate>/
+  readonly pubDatePlaceholder = '{pubD4t3}'
+
   axios: any;
 
   translator: Translate
@@ -121,6 +124,12 @@ export class QuesturaApi {
     // sostituisce la pratica con un placeholder per garantire che non sia
     // presente durante la traduzione
     feed = replace(feed, pratica, this.praticaPlaceholder)
+    let pubDate: string | null = null
+
+    feed = replace(feed, this.pubDateRe, (matched) => {
+      pubDate = matched
+      return this.pubDatePlaceholder
+    })
 
     let translated
     try {
@@ -131,6 +140,9 @@ export class QuesturaApi {
     }
     // reinserimento del numero pratica
     translated = replace(translated, this.praticaPlaceholder, pratica)
+    if (pubDate) {
+      translated = replace(translated, this.pubDatePlaceholder, pubDate)
+    }
     const translatedfeedObject = this._transformResponse(translated)
     return get(translatedfeedObject, 'rss.channel')
   }
