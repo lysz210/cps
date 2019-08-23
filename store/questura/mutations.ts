@@ -11,18 +11,18 @@ export function addResponse (state, response) {
   }
   const { responses } = state
   // consola.info('response', response)
-  pull(responses, find(responses, element => element.item.guid == response.item.guid)).unshift(response)
+  pull(responses, find(responses, element => element.item.guid === response.item.guid)).unshift(response)
 }
 
 export function hideResponse (state, guid: string) {
-  const item = find(state.responses, element => element.item.guid == guid)
+  const item = find(state.responses, element => element.item.guid === guid)
   if (item) {
     item.show = false
   }
 }
 
 export function showResponse (state, guid: string) {
-  const item = find(state.responses, element => element.item.guid == guid)
+  const item = find(state.responses, element => element.item.guid === guid)
   if (item) {
     item.show = true
   }

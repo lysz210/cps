@@ -1,6 +1,6 @@
 import { IStatoPratica } from '../my-lib/questura'
 
-export interface IStatoPraticaDisplayable {
+export interface IStatoPraticaDisplayable extends IStatoPratica {
   show: boolean
 }
 
