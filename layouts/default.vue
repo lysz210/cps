@@ -1,26 +1,6 @@
 <template>
   <v-app>
-    <v-navigation-drawer
-      v-model="drawer"
-      app
-    >
-      <v-list>
-        <v-list-item
-          v-for="locale in locales"
-          :key="locale.code"
-          :to="switchLocalePath(locale.code)"
-          router
-          exact
-        >
-          <v-list-item-action>
-            {{ locale.code }}
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title v-text="locale.native" />
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
+    <i18n-nav-drawer />
     <v-app-bar
       app
     >
@@ -64,22 +44,14 @@
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
 import consola from 'consola'
-import query from '~/database/graphql/i18n/client/query.gql'
 
 @Component({
   components: {
-    QuesturaSearch: () => import('~/components/questura/QuesturaSearch.vue')
-  },
-
-  apollo: {
-    locales: {
-      query: query.Locales
-    }
+    QuesturaSearch: () => import('~/components/questura/QuesturaSearch.vue'),
+    I18nNavDrawer: () => import('~/components/i18n-nav.vue')
   }
 })
 export default class LayoutDefault extends Vue {
-  locales: any[] = []
-
   clipped: boolean = true
 
   drawer: boolean = true
