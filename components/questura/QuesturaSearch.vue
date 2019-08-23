@@ -17,10 +17,10 @@
     <v-card flat>
       <v-container fluid grid-list-lg>
         <v-layout row wrap>
-          <v-flex v-for="(response, i) in activeResponses" :key="i" xs12>
+          <v-flex v-for="response in activeResponses" :key="response.item.guid" xs12>
             <stato-pratica
               :pratica="response"
-              @close="response.show = false"
+              @close="hideResponse(response.item.guid)"
             />
           </v-flex>
         </v-layout>
@@ -35,38 +35,43 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import { mdiBarcode } from '@mdi/js'
 import { debounce } from 'lodash'
-import { createNamespacedHelpers } from 'vuex'
+import { namespace } from 'vuex-class'
 import query from '~/database/graphql/questura/client/query.gql'
-// import StatoPratica from '~/components/questura/StatoPratica'
+import { IStatoPraticaDisplayable } from '~/types/lys'
 
 const {
-  // mapState: questuraState,
-  mapGetters: questuraGetters,
-  // mapMutations: questuraMutations,
-  mapActions: questuraActions
-} = createNamespacedHelpers('questura')
+  Getter,
+  Action,
+  Mutation
+} = namespace('questura')
 
 @Component({
   components: {
     StatoPratica: () => import('./StatoPratica.vue')
-  },
-  computed: {
-    ...questuraGetters([
-      'hideCard',
-      'hasResponses',
-      'activeResponses',
-      'showCard'
-    ])
-  },
-
-  methods: {
-    ...questuraActions(['addResponse'])
   }
 })
 export default class QuesturaSearch extends Vue {
   mdiBarcode = mdiBarcode
 
   numeroPratica: String | null = null
+
+  @Getter
+  hideCard!: boolean
+
+  @Getter
+  hasResponses!: boolean
+
+  @Getter
+  activeResponses!: IStatoPraticaDisplayable[]
+
+  @Getter
+  showCard!: boolean
+
+  @Action
+  addResponse!: (req: any) => Promise<IStatoPraticaDisplayable>
+
+  @Mutation
+  hideResponse!: (guid: string) => void
 
   verifica = debounce(async function (this: any, q: string) {
     await this.addResponse(
