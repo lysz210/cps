@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <i18n-nav-drawer />
+    <i18n-nav-drawer v-model="drawer" />
     <v-app-bar
       app
     >
@@ -9,7 +9,7 @@
         {{ $i18n.locale }}
       </v-btn>
       <v-toolbar-title ml-2>
-        {{ $t('cps.titolo') }}
+        {{ $t('cps.titolo') }} {{ drawer }}
       </v-toolbar-title>
       <v-spacer />
       <v-btn icon @click.stop="rightDrawer = !rightDrawer">

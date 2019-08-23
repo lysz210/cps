@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer v-model="drawer" app>
+  <v-navigation-drawer app :value="drawer" @input="v = $event; $emit('input', $event)">
     <v-list>
       <v-list-item
         v-for="locale in locales"
@@ -19,7 +19,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
+import { Component, Model } from 'vue-property-decorator'
 import query from '~/database/graphql/i18n/client/query.gql'
 
 @Component({
@@ -31,5 +31,16 @@ import query from '~/database/graphql/i18n/client/query.gql'
 })
 export default class I18nNavDrawer extends Vue {
   locales: any[] = []
+
+  v: any = null
+
+  @Model(
+    'input',
+    {
+      type: Boolean,
+      default: true
+    }
+  )
+  readonly drawer!: boolean
 }
 </script>
