@@ -8,6 +8,7 @@ import md5 from 'md5'
 import { Translation } from '../database/schema'
 import { TranslationInterface } from '../database/models/Translation'
 import createObjectPaths from './create-object-paths'
+import consola from 'consola';
 
 config()
 
@@ -180,17 +181,30 @@ export class Translate implements ITranslator {
     // o consecutivi in un'unico spazio ' '
     const hash = md5(replace(xml, /\s+/g, ' '))
     let response: string
+    let group = 'questura'
     const cached = await Translation.query().where({
-      group: 'questura',
+      group,
       item: hash,
       locale
     }).first()
     if (cached) {
+      console.log('from cache')
       response = cached.text || xml
     } else {
       const { text } = await this.translate(xml, locale)
 
       response = join(text)
+      // cache the translation on db for future use
+      try {
+        await Translation.query().insert({
+          locale,
+          group,
+          item: hash,
+          text: response
+        })
+      } catch (error) {
+        consola.error('Error saving translated text', error)
+      }
     }
 
     return response
