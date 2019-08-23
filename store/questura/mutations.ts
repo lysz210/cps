@@ -1,4 +1,4 @@
-import { find, merge } from 'lodash'
+import { find, pull } from 'lodash'
 // import consola from 'consola'
 export function setQuery (state, q) {
   state.query = q
@@ -6,17 +6,12 @@ export function setQuery (state, q) {
 
 export function addResponse (state, response) {
   if (!Array.isArray(state.responses)) {
-    state.responses = []
+    state.responses = [ response ]
+    return
   }
+  let { responses } = state
   // consola.info('response', response)
-  let item = find(state.responses, function (element) {
-    return element.item.guid == response.item.guid
-  })
-  if (item) {
-    merge(item, response)
-  } else {
-    state.responses.unshift(response)
-  }
+  pull(responses, find(responses, element => element.item.guid == response.item.guid )).unshift(response)
 }
 
 export function hideResponse (state, guid: string) {
