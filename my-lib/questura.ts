@@ -140,6 +140,7 @@ export class QuesturaApi {
     }
     // reinserimento del numero pratica
     translated = replace(translated, this.praticaPlaceholder, pratica)
+    // se la data pratica era presente, viene reinserito al posto del placeholder
     if (pubDate) {
       translated = replace(translated, this.pubDatePlaceholder, pubDate)
     }
