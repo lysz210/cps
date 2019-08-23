@@ -73,7 +73,7 @@ export default class QuesturaSearch extends Vue {
   @Mutation
   hideResponse!: (guid: string) => void
 
-  verifica = debounce(async function (this: any, q: string) {
+  verifica = debounce(async function (this: QuesturaSearch, q: string) {
     await this.addResponse(
       this.$apollo.query({
         query: query.StatoPratica,
