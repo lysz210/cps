@@ -1,0 +1,13 @@
+query Locales {
+  locales {
+    code,
+    name,
+    native
+  }
+}
+
+query Translation($locale: String!, $group: String!) {
+  translations(locale: $locale, group: $group) {
+    messages
+  }
+}
