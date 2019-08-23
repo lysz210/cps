@@ -39,9 +39,6 @@
     <v-content>
       <v-container>
         <questura-search />
-        <pre>
-          {{ translations }}
-        </pre>
         <nuxt />
       </v-container>
     </v-content>
@@ -64,49 +61,36 @@
 </template>
 
 <script lang="ts">
+import Vue from 'vue'
+import { Component } from 'vue-property-decorator'
 import query from '~/database/graphql/i18n/client/query.gql'
 
-export default {
+@Component({
   components: {
     QuesturaSearch: () => import('~/components/questura/QuesturaSearch.vue')
-  },
-  data () {
-    return {
-      translation: null,
-      locales: [],
-      clipped: true,
-      drawer: true,
-      fixed: false,
-      items: [
-        {
-          icon: 'apps',
-          title: 'Welcome',
-          to: '/'
-        },
-        {
-          icon: 'bubble_chart',
-          title: 'Inspire',
-          to: '/inspire'
-        }
-      ],
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
-      title: 'Vuetify.js'
-    }
-  },
-  apollo: {
+  }
+})
+export default class LayoutDefault extends Vue {
+  locales: any[] = []
+
+  clipped: boolean = true
+
+  drawer: boolean = true
+
+  fixed: boolean = false
+
+  miniVariant: boolean = false
+
+  right: boolean = true
+
+  rightDrawer: boolean = false
+
+  apollo: any = {
     locales: {
       query: query.Locales
-    },
-    translations: {
-      query: query.Translation,
-      variables: {
-        locale: 'zh',
-        group: 'cps'
-      }
     }
-  },
+  }
+
   mounted () {
     console.log(process.env.QUESTURA_API_URL)
   }
