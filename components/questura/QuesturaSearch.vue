@@ -18,8 +18,10 @@
       <v-container fluid grid-list-lg>
         <v-layout row wrap>
           <v-flex v-for="(response, i) in activeResponses" :key="i" xs12>
-            <stato-pratica :response="response" />
-            <pre>{{ response }}</pre>
+            <stato-pratica
+              :pratica="response"
+              @close="response.show = false"
+            />
           </v-flex>
         </v-layout>
       </v-container>
@@ -73,8 +75,7 @@ export default class QuesturaSearch extends Vue {
         variables: {
           pratica: q,
           locale: this.$i18n.locale
-        },
-        fetchPolicy: 'network-only'
+        }
       })
     )
   })
