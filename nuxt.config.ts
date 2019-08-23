@@ -5,6 +5,10 @@ import env from './.env.json'
 const config: Configuration = {
   mode: 'universal',
   env,
+  server: {
+    port: 8888,
+    host: '0.0.0.0'
+  },
   /*
    ** Headers of the page
    */
