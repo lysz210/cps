@@ -3,6 +3,7 @@
     <v-app-bar flat>
       <v-text-field
         v-model="numeroPratica"
+        name="pratica"
         :placeholder="$t('cps.searchHint')"
         single-line
         hide-details
@@ -28,6 +29,8 @@
 </template>
 
 <script lang="ts">
+import Vue from 'vue'
+import Component from 'vue-class-component'
 import { mdiBarcode } from '@mdi/js'
 import { debounce } from 'lodash'
 import { createNamespacedHelpers } from 'vuex'
@@ -41,15 +44,9 @@ const {
   mapActions: questuraActions
 } = createNamespacedHelpers('questura')
 
-export default {
+@Component({
   components: {
     StatoPratica: () => import('./StatoPratica.vue')
-  },
-  data () {
-    return {
-      mdiBarcode,
-      numeroPratica: null
-    }
   },
   computed: {
     ...questuraGetters([
@@ -59,19 +56,27 @@ export default {
       'showCard'
     ])
   },
+
   methods: {
-    ...questuraActions(['addResponse']),
-    verifica: debounce(async function (this: any, q: string) {
-      await this.addResponse(
-        this.$apollo.query({
-          query: query.StatoPratica,
-          variables: {
-            pratica: q,
-            locale: this.$i18n.locale
-          }
-        })
-      )
-    })
+    ...questuraActions(['addResponse'])
   }
+})
+export default class QuesturaSearch extends Vue {
+  mdiBarcode = mdiBarcode
+
+  numeroPratica: String | null = null
+
+  verifica = debounce(async function (this: any, q: string) {
+    await this.addResponse(
+      this.$apollo.query({
+        query: query.StatoPratica,
+        variables: {
+          pratica: q,
+          locale: this.$i18n.locale
+        },
+        fetchPolicy: 'network-only'
+      })
+    )
+  })
 }
 </script>
