@@ -12,7 +12,6 @@
     </v-app-bar>
     <v-card-title>{{ descrizione }}</v-card-title>
     <v-card-text>{{ dataRichiesta }}</v-card-text>
-    <v-card-text>{{ dettaglio }}</v-card-text>
   </v-card>
 </template>
 
@@ -25,7 +24,7 @@ import {
 import { IStatoPratica } from '~/my-lib/questura'
 
 @Component
-export default class StatoPratica extends Vue {
+export default class QuesturaStatoPratica extends Vue {
   @Prop({
     required: true
   })

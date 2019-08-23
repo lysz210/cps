@@ -18,7 +18,7 @@
       <v-container fluid grid-list-lg>
         <v-layout row wrap>
           <v-flex v-for="response in activeResponses" :key="response.item.guid" xs12>
-            <stato-pratica
+            <questura-stato-pratica
               :pratica="response"
               @close="hideResponse(response.item.guid)"
             />
@@ -47,7 +47,7 @@ const {
 
 @Component({
   components: {
-    StatoPratica: () => import('./StatoPratica.vue')
+    QuesturaStatoPratica: () => import('./QuesturaStatoPratica.vue')
   }
 })
 export default class QuesturaSearch extends Vue {
@@ -80,7 +80,8 @@ export default class QuesturaSearch extends Vue {
         variables: {
           pratica: q,
           locale: this.$i18n.locale
-        }
+        },
+        fetchPolicy: 'no-cache'
       })
     )
   })
