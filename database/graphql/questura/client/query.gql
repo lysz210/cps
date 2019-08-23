@@ -1,7 +1,11 @@
 query StatoPratica($pratica: String!, $locale: String!) {
   statoPratica(pratica: $pratica, locale: $locale) {
+    language
     item {
+      guid
+      title
       description
+      link
       pubDate
     }
   }
