@@ -1,4 +1,4 @@
-import { IResponseStatoPratica } from "~/types/lys";
+import { IResponseStatoPratica } from '~/types/lys'
 
 // req must be a Apollo query request
 export async function addResponse ({ commit }, req: IResponseStatoPratica) {
@@ -9,7 +9,7 @@ export async function addResponse ({ commit }, req: IResponseStatoPratica) {
   commit('setShowCard', true)
   try {
     const res = await req
-    const { data: { statoPratica } }= res
+    const { data: { statoPratica } } = res
     statoPratica.show = true
     commit('addResponse', statoPratica)
     return statoPratica

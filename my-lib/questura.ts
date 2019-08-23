@@ -88,6 +88,7 @@ export class QuesturaApi {
   readonly praticaPlaceholder = '{pl4c3h0ld3r}'
 
   readonly pubDateRe = /<pubDate>.*?<\/pubDate>/
+
   readonly pubDatePlaceholder = '{pubD4t3}'
 
   axios: any;

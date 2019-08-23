@@ -5,10 +5,10 @@ import { get, first, replace, join } from 'lodash'
 import { config } from 'dotenv'
 
 import md5 from 'md5'
+import consola from 'consola'
 import { Translation } from '../database/schema'
 import { TranslationInterface } from '../database/models/Translation'
 import createObjectPaths from './create-object-paths'
-import consola from 'consola';
 
 config()
 
@@ -181,7 +181,7 @@ export class Translate implements ITranslator {
     // o consecutivi in un'unico spazio ' '
     const hash = md5(replace(xml, /\s+/g, ' '))
     let response: string
-    let group = 'questura'
+    const group = 'questura'
     const cached = await Translation.query().where({
       group,
       item: hash,

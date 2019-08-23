@@ -6,23 +6,23 @@ export function setQuery (state, q) {
 
 export function addResponse (state, response) {
   if (!Array.isArray(state.responses)) {
-    state.responses = [ response ]
+    state.responses = [response]
     return
   }
-  let { responses } = state
+  const { responses } = state
   // consola.info('response', response)
-  pull(responses, find(responses, element => element.item.guid == response.item.guid )).unshift(response)
+  pull(responses, find(responses, element => element.item.guid == response.item.guid)).unshift(response)
 }
 
 export function hideResponse (state, guid: string) {
-  let item = find(state.responses, element => element.item.guid == guid)
+  const item = find(state.responses, element => element.item.guid == guid)
   if (item) {
     item.show = false
   }
 }
 
-export function showResponse (state,  guid: string) {
-  let item = find(state.responses, element => element.item.guid == guid)
+export function showResponse (state, guid: string) {
+  const item = find(state.responses, element => element.item.guid == guid)
   if (item) {
     item.show = true
   }
