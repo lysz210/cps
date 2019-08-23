@@ -78,6 +78,7 @@
     "sass": "^1.22.9",
     "sass-loader": "^7.1.0",
     "vue-class-component": "^7.1.0",
-    "vue-jest": "^3.0.3"
+    "vue-jest": "^3.0.3",
+    "vue-property-decorator": "^8.2.1"
   }
 }
