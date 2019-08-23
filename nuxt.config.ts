@@ -62,10 +62,10 @@ const config: Configuration = {
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
     '@nuxtjs/eslint-module',
-    '~/modules/apollo',
+    './modules/apollo',
     '@nuxtjs/apollo',
-    '~/modules/my-i18n',
-    '~/modules/legacy-html'
+    './modules/my-i18n',
+    './modules/legacy-html'
   ],
   /*
    ** Axios module configuration
