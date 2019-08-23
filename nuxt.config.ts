@@ -6,8 +6,8 @@ const config: Configuration = {
   mode: 'universal',
   env,
   server: {
-    port: 8888,
-    host: '0.0.0.0'
+    port: env.HTTP_PORT,
+    host: env.HTTP_HOST
   },
   /*
    ** Headers of the page
@@ -93,7 +93,7 @@ const config: Configuration = {
   apollo: {
     clientConfigs: {
       default: {
-        httpEndpoint: `${env.APP_URL}:3000/gql`
+        httpEndpoint: `${env.HTTP_PROTOCOL}://${env.HTTP_HOST}:${env.HTTP_PORT}/gql`
       }
     }
   },
