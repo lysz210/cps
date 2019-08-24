@@ -1,3 +1,4 @@
+import { join } from 'path'
 import { Configuration } from '@nuxt/types'
 import colors from 'vuetify/es5/util/colors'
 import env from './.env.json'
@@ -62,10 +63,10 @@ const config: Configuration = {
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
     '@nuxtjs/eslint-module',
-    __dirname + '/modules/apollo',
+    join(__dirname, '/modules/apollo'),
     '@nuxtjs/apollo',
-    __dirname + '/modules/my-i18n',
-    __dirname + '/modules/legacy-html'
+    join(__dirname, '/modules/my-i18n'),
+    join(__dirname, '/modules/legacy-html')
   ],
   /*
    ** Axios module configuration

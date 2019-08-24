@@ -123,15 +123,15 @@ export class QuesturaApi {
     let feed = replace(await this.getFeed(pratica), this.cdataTagRe, '')
     // sostituisce la pratica con un placeholder per garantire che non sia
     // presente durante la traduzione
-    
-    let placeholderManager = new TagPlaceholder([
+
+    const placeholderManager = new TagPlaceholder([
       'link',
       'language',
       'url',
       'guid',
       'pubDate'
     ])
-    
+
     feed = placeholderManager.placehold(feed)
     feed = replace(feed, pratica, this.praticaPlaceholder)
 
@@ -148,7 +148,7 @@ export class QuesturaApi {
     translated = placeholderManager.unplacehold(translated)
 
     const translatedfeedObject = this._transformResponse(translated)
-    let statoPratica: IStatoPratica = get(translatedfeedObject, 'rss.channel')
+    const statoPratica: IStatoPratica = get(translatedfeedObject, 'rss.channel')
     statoPratica.language = locale
     statoPratica.pratica = pratica
     return statoPratica

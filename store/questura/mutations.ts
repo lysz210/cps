@@ -1,6 +1,6 @@
 import { find, pull } from 'lodash'
-import { IStatoPratica } from '~/my-lib/questura';
 import consola from 'consola'
+import { IStatoPratica } from '~/my-lib/questura'
 export function setQuery (state, q) {
   state.query = q
 }

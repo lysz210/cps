@@ -12,7 +12,11 @@ export class TagPlaceholder {
 
   protected $cache: ITagPlaceholderCache = {}
 
-  constructor ( protected $tagList: string[] ) {}
+  protected $tagList: string[]
+
+  constructor (tagLista: string[]) {
+    this.$tagList = tagLista
+  }
 
   placehold (text: string) {
     this.$cache = {}
