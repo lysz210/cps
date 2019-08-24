@@ -11,6 +11,7 @@ export async function addResponse ({ commit }, req: IResponseStatoPratica) {
     const res = await req
     const { data: { statoPratica } } = res
     statoPratica.show = true
+    statoPratica.id = `${statoPratica.language}:${statoPratica.pratica}`
     commit('addResponse', statoPratica)
     return statoPratica
   } catch (error) {

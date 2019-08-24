@@ -1,5 +1,6 @@
 import { find, pull } from 'lodash'
-// import consola from 'consola'
+import { IStatoPratica } from '~/my-lib/questura';
+import consola from 'consola'
 export function setQuery (state, q) {
   state.query = q
 }
@@ -11,18 +12,27 @@ export function addResponse (state, response) {
   }
   const { responses } = state
   // consola.info('response', response)
-  pull(responses, find(responses, element => element.item.guid === response.item.guid)).unshift(response)
+  pull(responses, find(responses, element => element.id === response.id)).unshift(response)
 }
 
-export function hideResponse (state, guid: string) {
-  const item = find(state.responses, element => element.item.guid === guid)
+export function hideResponse (state, statoPratica: IStatoPratica) {
+  const item = find(state.responses, element => element.id === statoPratica.id)
+  consola.info('hiding', item)
   if (item) {
     item.show = false
   }
 }
 
-export function showResponse (state, guid: string) {
-  const item = find(state.responses, element => element.item.guid === guid)
+export function toggleResponse (state, statoPratica: IStatoPratica) {
+  const item = find(state.responses, element => element.id === statoPratica.id)
+  if (item) {
+    item.show = !item.show
+    consola.info('toggling', item.show)
+  }
+}
+
+export function showResponse (state, statoPratica: IStatoPratica) {
+  const item = find(state.responses, element => element.id === statoPratica.id)
   if (item) {
     item.show = true
   }

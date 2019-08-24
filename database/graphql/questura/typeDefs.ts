@@ -10,6 +10,7 @@ type StatoPratica {
   link: String
   decription: String
   language: String
+  pratica: String
   item: DettaglioStatoPratica
 }
 

@@ -1,6 +1,7 @@
 query StatoPratica($pratica: String!, $locale: String!) {
   statoPratica(pratica: $pratica, locale: $locale) {
     language
+    pratica
     item {
       guid
       title

@@ -17,10 +17,10 @@
     <v-card flat>
       <v-container fluid grid-list-lg>
         <v-layout row wrap>
-          <v-flex v-for="response in activeResponses" :key="response.item.guid" xs12>
+          <v-flex v-for="statoPratica in responses" :key="statoPratica.id" xs12>
             <questura-stato-pratica
-              :pratica="response"
-              @close="hideResponse(response.item.guid)"
+              :pratica="statoPratica"
+              @toggle="toggleResponse(statoPratica)"
             />
           </v-flex>
         </v-layout>
@@ -39,6 +39,7 @@ import query from '~/database/graphql/questura/client/query.gql'
 import { IStatoPraticaDisplayable } from '~/types/lys'
 
 const {
+  State,
   Getter,
   Action,
   Mutation
@@ -60,8 +61,8 @@ export default class QuesturaSearch extends Vue {
   @Getter
   hasResponses!: boolean
 
-  @Getter
-  activeResponses!: IStatoPraticaDisplayable[]
+  @State
+  responses!: IStatoPraticaDisplayable[]
 
   @Getter
   showCard!: boolean
@@ -70,7 +71,7 @@ export default class QuesturaSearch extends Vue {
   addResponse!: (req: any) => Promise<IStatoPraticaDisplayable>
 
   @Mutation
-  hideResponse!: (guid: string) => void
+  toggleResponse!: (guid: IStatoPraticaDisplayable) => void
 
   verifica = debounce(async function (this: QuesturaSearch, q: string) {
     await this.addResponse(
@@ -79,8 +80,7 @@ export default class QuesturaSearch extends Vue {
         variables: {
           pratica: q,
           locale: this.$i18n.locale
-        },
-        fetchPolicy: 'no-cache'
+        }
       })
     )
   })
