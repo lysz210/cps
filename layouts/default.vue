@@ -9,7 +9,7 @@
         {{ $i18n.locale }}
       </v-btn>
       <v-toolbar-title ml-2>
-        {{ $t('cps.titolo') }} {{ drawer }}
+        {{ $t('cps.titolo') }}
       </v-toolbar-title>
       <v-spacer />
       <v-btn icon @click.stop="rightDrawer = !rightDrawer">

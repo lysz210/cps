@@ -4,6 +4,7 @@ import parser from 'fast-xml-parser'
 import { decode } from 'he'
 
 import createTranslator, { Translate } from './yandex'
+import { TagPlaceholder } from './place-holder'
 
 export interface QuesturaQueryInterface {
   pratica: string
@@ -73,6 +74,8 @@ export interface IBasePratica {
 }
 
 export interface IStatoPratica extends IBasePratica {
+  pratica?: string
+  id?: string
   language: string
   item: IDettaglioPratica
 }
@@ -86,10 +89,6 @@ export class QuesturaApi {
   readonly cdataTagRe = /<!\[CDATA\[|\]\]>/ig
 
   readonly praticaPlaceholder = '{pl4c3h0ld3r}'
-
-  readonly pubDateRe = /<pubDate>.*?<\/pubDate>/
-
-  readonly pubDatePlaceholder = '{pubD4t3}'
 
   axios: any;
 
@@ -124,13 +123,17 @@ export class QuesturaApi {
     let feed = replace(await this.getFeed(pratica), this.cdataTagRe, '')
     // sostituisce la pratica con un placeholder per garantire che non sia
     // presente durante la traduzione
+    
+    let placeholderManager = new TagPlaceholder([
+      'link',
+      'language',
+      'url',
+      'guid',
+      'pubDate'
+    ])
+    
+    feed = placeholderManager.placehold(feed)
     feed = replace(feed, pratica, this.praticaPlaceholder)
-    let pubDate: string | null = null
-
-    feed = replace(feed, this.pubDateRe, (matched) => {
-      pubDate = matched
-      return this.pubDatePlaceholder
-    })
 
     let translated
     try {
@@ -142,10 +145,12 @@ export class QuesturaApi {
     // reinserimento del numero pratica
     translated = replace(translated, this.praticaPlaceholder, pratica)
     // se la data pratica era presente, viene reinserito al posto del placeholder
-    if (pubDate) {
-      translated = replace(translated, this.pubDatePlaceholder, pubDate)
-    }
+    translated = placeholderManager.unplacehold(translated)
+
     const translatedfeedObject = this._transformResponse(translated)
-    return get(translatedfeedObject, 'rss.channel')
+    let statoPratica: IStatoPratica = get(translatedfeedObject, 'rss.channel')
+    statoPratica.language = locale
+    statoPratica.pratica = pratica
+    return statoPratica
   }
 }

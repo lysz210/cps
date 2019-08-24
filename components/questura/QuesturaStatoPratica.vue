@@ -1,18 +1,21 @@
 <template>
   <v-card flat>
     <v-system-bar>
-      <span>{{ titolo }}</span>
-      <v-spacer />
-      <v-icon @click="$emit('refresh')">
-        refresh
-      </v-icon>
-      <v-icon @click="$emit('close')">
-        minimize
-      </v-icon>
       <strong>{{ locale }}</strong>
+      -
+      <span class="d-inline d-md-none">{{ idPratica }}</span>
+      <span class="d-none d-md-inline">{{ titolo }}</span>
+      <v-spacer />
+      <v-icon @click="$emit('toggle')">
+        {{ showDetails ? 'minimize' : 'crop_5_4' }}
+      </v-icon>
     </v-system-bar>
-    <v-card-title>{{ descrizione }}</v-card-title>
-    <v-card-text>{{ dataRichiesta }}</v-card-text>
+    <v-card-title v-if="showDetails">
+      {{ descrizione }}
+    </v-card-title>
+    <v-card-text v-if="showDetails">
+      {{ dataRichiesta }}
+    </v-card-text>
   </v-card>
 </template>
 
@@ -22,14 +25,22 @@ import {
   Component,
   Prop
 } from 'vue-property-decorator'
-import { IStatoPratica } from '~/my-lib/questura'
+import { IStatoPraticaDisplayable } from '../../types/lys'
 
 @Component
 export default class QuesturaStatoPratica extends Vue {
   @Prop({
     required: true
   })
-  pratica!: IStatoPratica
+  pratica!: IStatoPraticaDisplayable
+
+  get showDetails () {
+    return this.pratica.show
+  }
+
+  get idPratica () {
+    return this.pratica.pratica
+  }
 
   get locale () {
     return this.pratica.language
