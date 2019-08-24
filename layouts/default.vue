@@ -12,6 +12,20 @@
         {{ $t('cps.titolo') }}
       </v-toolbar-title>
       <v-spacer />
+      <v-btn
+        href="https://github.com/lysz210/cps"
+        target="_blank"
+        icon
+      >
+        <v-icon>{{ githubIcon }}</v-icon>
+      </v-btn>
+      <v-btn
+        href="https://www.facebook.com/Verifica-il-permesso-di-soggiorno-1855295221353128/"
+        target="_blank"
+        icon
+      >
+        <v-icon>{{ facebookIcon }}</v-icon>
+      </v-btn>
       <v-btn icon @click.stop="rightDrawer = !rightDrawer">
         <v-icon>menu</v-icon>
       </v-btn>
@@ -44,6 +58,7 @@
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
 import consola from 'consola'
+import { mdiGithubFace, mdiFacebook } from '@mdi/js'
 
 @Component({
   components: {
@@ -63,6 +78,10 @@ export default class LayoutDefault extends Vue {
   right: boolean = true
 
   rightDrawer: boolean = false
+
+  get githubIcon () { return mdiGithubFace }
+
+  get facebookIcon () { return mdiFacebook }
 
   mounted () {
     consola.info(process.env.QUESTURA_API_URL)
