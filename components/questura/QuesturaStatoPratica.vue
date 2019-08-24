@@ -13,9 +13,11 @@
     <v-card-title v-if="showDetails">
       {{ descrizione }}
     </v-card-title>
-    <v-card-text v-if="showDetails">
-      {{ dataRichiesta }}
-    </v-card-text>
+    <v-footer v-if="showDetails">
+      <small>
+        {{ dataRichiesta }}
+      </small>
+    </v-footer>
   </v-card>
 </template>
 
