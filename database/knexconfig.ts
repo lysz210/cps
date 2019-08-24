@@ -1,22 +1,23 @@
 import { resolve } from 'path'
+import { get } from 'lodash'
 import env from '../.env.json'
 
-const {
-  DB_DIRNAME = '',
-  DB_DATABASE = './dev.sqlite3',
-  DB_CONNECTION = 'sqlite3'
-} = env
+// FIXME: Bisogna utilizzare un dbms piu' serio.
+// creare parecchi problemi specialmente con accessi concorrenti
+const dbDir = get(env, 'DB_DIRNAME', 'database')
 
 export default {
-  client: DB_CONNECTION,
-  useNullAsDefault: true,
+  client: get(env, 'DB_CONNECTION', 'pg'),
   connection: {
-    filename: resolve('.', DB_DIRNAME, DB_DATABASE)
+    host: get(env, 'DB_HOST', '127.0.0.1'),
+    user: get(env, 'DB_USER', 'homestead'),
+    password: get(env, 'DB_PASSWORD', 'secret'),
+    database: get(env, 'DB_DATABASE', 'homestead')
   },
   migrations: {
-    directory: resolve('.', DB_DIRNAME, 'migrations')
+    directory: resolve('.', dbDir, 'migrations')
   },
   seeds: {
-    directory: resolve('.', DB_DIRNAME, 'seeds')
+    directory: resolve('.', dbDir, 'seeds')
   }
 }
