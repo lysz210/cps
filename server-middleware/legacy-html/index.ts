@@ -9,19 +9,19 @@ import _, {
   find
 } from 'lodash'
 import { Language } from '../../database/schema'
-import createTraslate from '../../my-lib/yandex'
+import { QuesturaApi } from '../../my-lib/questura'
 import configs from '../../.env.json'
 
 export default async (req, res, next) => {
   try {
     const { _parsedUrl } = req
     const q = parse(_parsedUrl.query)
-    const t = createTraslate(configs)
+    const t = new QuesturaApi(configs)
     let statoPratica
-    const lang = get(q, 'lang', 'it')
+    const lang: string = get(q, 'lang', 'it')
     // const reqUrl = new URL(req._parsedUrl)
     if (has(q, 'pratica')) {
-      statoPratica = await t.translateStatoPratica(<string> q.pratica, lang)
+      statoPratica = await t.translate(<string> q.pratica, lang)
     }
     const base = await readFileSync(join(__dirname, 'layout.html'), { encoding: 'utf-8' })
     const view = template(base, {
