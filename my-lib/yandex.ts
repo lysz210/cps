@@ -2,15 +2,12 @@
 import querystring from 'querystring'
 import axios from 'axios'
 import { get, first, replace, join } from 'lodash'
-import { config } from 'dotenv'
 
 import md5 from 'md5'
 import consola from 'consola'
 import { Translation } from '../database/schema'
 import { TranslationInterface } from '../database/models/Translation'
 import createObjectPaths from './create-object-paths'
-
-config()
 
 interface ITranslator {
   apiUrl?: string;
