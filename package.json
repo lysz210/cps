@@ -14,8 +14,9 @@
     "build": "nuxt-ts build",
     "start": "nuxt-ts start",
     "generate": "nuxt-ts generate",
-    "seed": "node ./database/bin/knex seed:run",
-    "migrate": "knex migrate:latest"
+    "db:seed": "node ./database/bin/knex seed:run",
+    "db:migrate": "knex migrate:latest",
+    "db:rollback": "knex migrate:rollback"
   },
   "dependencies": {
     "@nuxt/typescript-runtime": "^0.1.2",
@@ -41,7 +42,7 @@
     "nuxt-i18n": "^6.0.1",
     "nuxt-property-decorator": "^2.3.0",
     "objection": "^1.6.9",
-    "sqlite3": "^4.0.9",
+    "pg": "^7.12.1",
     "ts-node": "^8.3.0",
     "typescript": "^3.5.3",
     "vuex-class": "^0.3.2"

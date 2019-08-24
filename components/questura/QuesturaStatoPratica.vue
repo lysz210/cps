@@ -1,15 +1,16 @@
 <template>
   <v-card flat>
-    <v-app-bar flat>
-      <v-toolbar-title>{{ locale }} - {{ titolo }}</v-toolbar-title>
+    <v-system-bar>
+      <span>{{ titolo }}</span>
       <v-spacer />
-      <v-btn icon mr-1 @click="$emit('refresh')">
-        <v-icon>refresh</v-icon>
-      </v-btn>
-      <v-btn icon @click="$emit('close')">
-        <v-icon>minimize</v-icon>
-      </v-btn>
-    </v-app-bar>
+      <v-icon @click="$emit('refresh')">
+        refresh
+      </v-icon>
+      <v-icon @click="$emit('close')">
+        minimize
+      </v-icon>
+      <strong>{{ locale }}</strong>
+    </v-system-bar>
     <v-card-title>{{ descrizione }}</v-card-title>
     <v-card-text>{{ dataRichiesta }}</v-card-text>
   </v-card>
