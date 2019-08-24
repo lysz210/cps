@@ -5,7 +5,7 @@ export function up (knex) {
   return knex.schema.createTable(TABLE_NAME, ($table) => {
     $table.increments('id')
     $table
-      .string('code', 10)
+      .string('code', 11)
       .unique()
       .comment('Language abbr')
     $table
