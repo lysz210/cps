@@ -6,8 +6,6 @@ query Locales {
   }
 }
 
-query Translation($locale: String!, $group: String!) {
-  translations(locale: $locale, group: $group) {
-    messages
-  }
+query I18nMessages($locale: String!) {
+  cps: translations(locale: $locale, group: "cps")
 }

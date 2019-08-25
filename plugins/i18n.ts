@@ -1,14 +1,9 @@
-import gql from 'graphql-tag'
-import consola from 'consola'
 import { includes } from 'lodash'
+import query from '~/database/graphql/i18n/client/query.gql'
 
 async function fetchLocale (locale, apollo) {
   const { data } = await apollo.query({
-    query: gql`
-      query Translation($locale: String!) {
-        cps: translations(locale: $locale, group: "cps")
-      }
-    `,
+    query: query.I18nMessages,
     variables: {
       locale: locale
     }

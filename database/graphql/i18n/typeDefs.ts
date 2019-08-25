@@ -5,7 +5,7 @@ scalar JSON
 extend type Query {
   "A simple type of getting started!"
   locales: [Locale]
-  translations(locale: String!, group: String!): JSON
+  translations(group: String!, locale: String!, namespace: String): JSON
 }
 
 type Locale {
