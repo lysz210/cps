@@ -52,8 +52,16 @@ const config: Configuration = {
    ** Plugins to load before mounting the App
    */
   plugins: [
-    { src: '~/plugins/i18n.js' }
+    { src: '~/plugins/i18n' }
   ],
+  /*
+   ** Router configs
+   */
+  // router: {
+  //   middleware: [
+  //     'mid-i18n'
+  //   ]
+  // },
   /*
    ** Nuxt.js modules
    */
@@ -111,14 +119,6 @@ const config: Configuration = {
     strategy: 'prefix_and_default',
     vueI18n: {
       fallbackLocale: 'it',
-      messages: {
-        en: {
-          hello: 'hello'
-        },
-        it: {
-          hello: 'ciao'
-        }
-      }
     }
   },
   /*

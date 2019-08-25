@@ -8,7 +8,7 @@ export const Query = {
   translations: async (_obj, { locale, group }) => {
     const dictionary = await Translation.query().where({ group, locale })
     const messages = dictionary.reduce((acc, { item, text }) => set(acc, item, text), {})
-    return [{ locale, group, messages }]
+    return messages
   }
 }
 

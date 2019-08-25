@@ -18,7 +18,8 @@ const i18nModule: Module<any> = async function myI18n (userOptions) {
   if (!has(this.options, 'i18n')) {
     this.options.i18n = {}
   }
-  this.options.i18n.vueI18n.messages.it.cps = cps
+  // this.options.i18n.vueI18n.messages.it.cps = cps
+  // this.options.i18n = {}
   // TODO: verificare che all'interno del message sia presente i message per il fallback
   // eventualmente recuperare i dati da db e anche cartella i18n ed effettuare merge dei valori
   // con preferenza su quelli in locale su i18n/<locale>
