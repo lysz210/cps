@@ -6,10 +6,10 @@ import env from './.env.json'
 const config: Configuration = {
   mode: 'universal',
   env,
-  server: {
-    port: env.HTTP_PORT,
-    host: env.HTTP_HOST
-  },
+  // server: {
+  //   port: env.HTTP_PORT,
+  //   host: env.HTTP_HOST
+  // },
   /*
    ** Headers of the page
    */
@@ -72,7 +72,6 @@ const config: Configuration = {
     '@nuxtjs/pwa',
     '@nuxtjs/eslint-module',
     join(__dirname, '/modules/apollo'),
-    '@nuxtjs/apollo',
     join(__dirname, '/modules/my-i18n'),
     join(__dirname, '/modules/legacy-html')
   ],
@@ -99,13 +98,13 @@ const config: Configuration = {
   /**
    * apollo configs
    */
-  apollo: {
-    clientConfigs: {
-      default: {
-        httpEndpoint: `${env.HTTP_PROTOCOL}://${env.HTTP_HOST}:${env.HTTP_PORT}/gql`
-      }
-    }
-  },
+  // apollo: {
+  //   clientConfigs: {
+  //     default: {
+  //       httpEndpoint: `${env.HTTP_PROTOCOL}://${env.HTTP_HOST}:${env.HTTP_PORT}/gql`
+  //     }
+  //   }
+  // },
   /*
    *
    */
@@ -118,7 +117,7 @@ const config: Configuration = {
     // - 'prefix_and_default': add locale prefix for every locale and default
     strategy: 'prefix_and_default',
     vueI18n: {
-      fallbackLocale: 'it',
+      fallbackLocale: 'it'
     }
   },
   /*
