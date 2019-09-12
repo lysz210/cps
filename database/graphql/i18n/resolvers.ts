@@ -1,8 +1,8 @@
 
 import GraphQLJSON from 'graphql-type-json'
 import { set } from 'lodash'
-import { Language, Translation } from '../../schema'
 import consola from 'consola'
+import { Language, Translation } from '../../schema'
 
 export const Query = {
   locales: () => Language.query().where('yandex', true).orderBy('order').orderBy('code'),

@@ -33,6 +33,8 @@
     "graphql-tag": "^2.10.1",
     "graphql-type-json": "^0.3.0",
     "he": "^1.2.0",
+    "javascript-barcode-reader": "^0.4.18",
+    "kld-affine": "ssh://git@github.com:lysz210/kld-affine.git#typedefs",
     "knex": "^0.19.1",
     "koa": "^2.7.0",
     "lodash": "^4.17.15",

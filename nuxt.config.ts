@@ -6,10 +6,10 @@ import env from './.env.json'
 const config: Configuration = {
   mode: 'universal',
   env,
-  // server: {
-  //   port: env.HTTP_PORT,
-  //   host: env.HTTP_HOST
-  // },
+  server: {
+    port: env.HTTP_PORT,
+    host: env.HTTP_HOST
+  },
   /*
    ** Headers of the page
    */

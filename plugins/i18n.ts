@@ -5,7 +5,7 @@ async function fetchLocale (locale, apollo) {
   const { data } = await apollo.query({
     query: query.I18nMessages,
     variables: {
-      locale: locale
+      locale
     }
   })
   return data
@@ -15,7 +15,7 @@ async function loadLocale (locale, i18n, apollo) {
   if (includes(i18n.availableLocales, locale)) {
     return
   }
-  let data = await fetchLocale(locale, apollo)
+  const data = await fetchLocale(locale, apollo)
   i18n.mergeLocaleMessage(i18n.locale, data)
 }
 
