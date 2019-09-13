@@ -2,7 +2,7 @@
   <div>
     <div id="bord" style="position: fixed; top: 0; left: 0; width: 100%; background-color: yellow; z-index: 99999;">
       event: {{ uiPointer }}-{{ show }} <br />
-      {{ pivot }} <br /> {{ resizeHandle }} <br /> {{ rotationHandle }} <br /> {{ uiVector }}
+      {{ pivot }} <br /> {{ resizeHandle }} <br /> {{ rotationHandle }} <br /> {{ uiVector }} <br /> {{ deg }} - {{ rad }}
     </div>
     <svg
       id="svgHelper"
@@ -15,12 +15,27 @@
       height="500"
     >
       <defs>
+        <!--
+          DEFINIZIONE DELL'INTERFACCIA PER LA LOCALIZZAZIONE DEL BARCODE
+          TUTTO IL SISTEMA VIENE DEFINITO IN SCALA 1 CON
+          RIFERIMENTO LA LINEA ROSSA DOVE VERRA' ESTRATTO LA STRISCIA DA DECODIFICARE
+          IL PUNTO MEDIO DELLA LINEA ROSSA SARA' L'ORIGINE DI TUTTO IL SISTEMA
+          E ANCHE IL PUNTO PER SPOSTARE IL LOCALIZZATORE
+          L'ESTREMO SINISTRO VERRA' USATO PER IL RIDIMENSIONAMENTO
+          L'ESTREMO DESTRO VERRA' USATO PER LA ROTAZIONE
+          TUTTI E TRE I PUNTI AVRANNO UN'APPOSITA ICONA PER INDICARE IL LORO SCOPO.
+          PER RIDIMENSIONARE E RUOTARE IL LOCALIZZATORE VERRA' UTILIZZATO ROTAZIONE
+          E RIDIMENSIONAMENTO DELL'ELEMENTO USE. MENTRE LO SPOSTAMENTO VERRA' FATTO
+          POSIZIONANDO CORRETTAMENTE L'ELEMENTO CON X, Y
+          Per la parte di interazione, sara' il JS che determinera' se il punto di interazione
+          si trova sopra a uno dei 3 punti di gestione.
+        -->
         <rect
           id="codeBoundary"
-          :x="rect.x"
-          :y="rect.y"
-          :width="rect.width"
-          :height="rect.height"
+          x="-0.5"
+          :y="-height / 2"
+          width="1"
+          :height="height"
         />
         <circle
           id="baseCircle"
@@ -99,40 +114,35 @@
             transform="rotate(60)"
           />
         </g>
-        <g id="scanHelperDef" :transform="`rotate(${deg}, ${pivot.x}, ${pivot.y})`">
+        <g id="scanHelperDef">
           <use
             ref="codeBoundary"
             xlink:href="#codeBoundary"
-            :x="pivot.x"
-            :y="pivot.y"
+            :transform="`scale(${rect.width})`"
           />
           <line
             id="scanLine"
             refs="scanLine"
-            :x1="resizeHandle.x"
-            :y1="resizeHandle.y"
-            :x2="rotationHandle.x"
-            :y2="rotationHandle.y"
+            :x1="-rect.width / 2"
+            y1="0"
+            :x2="rect.width / 2"
+            y2="0"
+          />
+          <use
+            id="rotationHandle"
+            xlink:href="#rotateIcon"
+            :x="rect.width / 2"
+          />
+          <use
+            id="resizeHandle"
+            xlink:href="#resizeIcon"
+            :x="-rect.width / 2"
           />
 
           <g id="editDots">
             <use
               id="pivot"
               xlink:href="#moveIcon"
-              :x="pivot.x"
-              :y="pivot.y"
-            />
-            <use
-              id="rotationHandle"
-              xlink:href="#rotateIcon"
-              :x="rotationHandle.x"
-              :y="rotationHandle.y"
-            />
-            <use
-              id="resizeHandle"
-              xlink:href="#resizeIcon"
-              :x="resizeHandle.x"
-              :y="resizeHandle.y"
             />
           </g>
         </g>
@@ -141,6 +151,9 @@
       <use
         id="scanHelper"
         xlink:href="#scanHelperDef"
+        :x="pivot.x"
+        :y="pivot.y"
+        :transform="`rotate(${deg}, ${pivot.x}, ${pivot.y})`"
       />
     </svg>
     <div
@@ -217,6 +230,12 @@ export default class BC extends Vue {
   src = 'r30.jpeg'
 
   handleRadius = 12
+
+  codeBoundaryRatio = 9 / 16
+
+  get height () {
+    return this.codeBoundaryRatio
+  }
 
   rect: {x, y, height, width} | null = null
 
@@ -342,7 +361,7 @@ export default class BC extends Vue {
   buildRectangle () {
     const vector = Vector2D.fromPoints(this.resizeHandle, this.rotationHandle)
     const width = vector.length()
-    const height = width * 0.45
+    const height = width * this.codeBoundaryRatio
     this.rect = {
       x: -(width / 2),
       y: -(height / 2),
@@ -402,11 +421,15 @@ export default class BC extends Vue {
   }
 
   onRotate ({ x, y }) {
-    const vStart = Vector2D.fromPoints(this.pivot, this.rotationHandle)
+    const vStart1 = Vector2D.fromPoints(this.pivot, this.rotationHandle)
+    const vStart = Vector2D.fromPoints(this.pivot, { x: this.pivot.x + 10, y: this.pivot.y })
     const vEnd = Vector2D.fromPoints(this.pivot, { x, y })
     this.rad = vStart.angleBetween(vEnd)
     this.deg = degree(this.rad)
-    consola.info('Rotating', this.deg)
+    consola.info('Rotating', this.deg, this.rad)
+    const mx = Matrix2D.rotationAt(vStart1.angleBetween(vEnd), this.pivot)
+    this.rotationHandle = this.rotationHandle.transform(mx)
+    this.resizeHandle = this.resizeHandle.transform(mx)
   }
 
   onResize ({ x, y }) {
@@ -427,9 +450,10 @@ export default class BC extends Vue {
   }
 
   #codeBoundary {
-    stroke-width: 1px;
-    stroke: blue;
-    fill-opacity: 0;
+    // stroke-width: 1px;
+    // stroke: blue;
+    fill-opacity: 0.3;
+    fill: green;
   }
 
   #scanLine {
