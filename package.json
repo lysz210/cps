@@ -37,7 +37,7 @@
     "kld-affine": "ssh://git@github.com:lysz210/kld-affine.git#typedefs",
     "knex": "^2.4.0",
     "koa": "^2.7.0",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.21",
     "md5": "^2.2.1",
     "moment": "^2.29.4",
     "nuxt": "^2.9.1",
